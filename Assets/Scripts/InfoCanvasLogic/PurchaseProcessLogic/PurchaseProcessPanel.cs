@@ -9,7 +9,7 @@ namespace InfoCanvasLogic.PurchaseProcessLogic
     public class PurchaseProcessPanel : MonoBehaviour, IDisposable
     {
         private IPurchaseProcess _purchaseProcess;
-
+        
         private CompositeDisposable _disposable;
         
         [Inject]
@@ -25,14 +25,21 @@ namespace InfoCanvasLogic.PurchaseProcessLogic
 
         private void Setup()
         {
-            _purchaseProcess.OnStarted.Subscribe((type) => ShowWindow(type)).AddTo(_disposable);
+            _purchaseProcess.OnStarted.Subscribe((type) => Show()).AddTo(_disposable);
+
+            gameObject.SetActive(false);
         }
 
-        private void ShowWindow(PurchaseProcessType purchaseProcessType)
+        private void Show()
         {
-            
+            gameObject.SetActive(true);
         }
 
+        private void Hide()
+        {
+            gameObject.SetActive(false);
+        }
+        
         public void Dispose()
         {
             _disposable?.Dispose();

@@ -10,5 +10,6 @@ namespace PurchaseLogic.PurchaseProcessLogic
         void Start(PurchaseProcessType purchaseProcessType);
         void SetResult(PurchaseResultType resultType);
         void Finish();
+        void Setup();
     }
 }

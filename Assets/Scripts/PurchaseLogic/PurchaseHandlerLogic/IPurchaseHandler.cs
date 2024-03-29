@@ -6,5 +6,6 @@ namespace PurchaseLogic.PurchaseHandlerLogic
     {
         ReactiveCommand<PurchaseResultType> OnPurchaseFinished { get; }
         void Process(int price);
+        void Setup();
     }
 }

@@ -8,5 +8,6 @@ namespace PurchaseLogic.PurchaseSystemLogic
         IPurchaseSystem OnCancelCallback(ReactiveCommand callback);
         IPurchaseSystem OnFailureCallback(ReactiveCommand callback);
         void Purchase(int price);
+        void Setup();
     }
 }

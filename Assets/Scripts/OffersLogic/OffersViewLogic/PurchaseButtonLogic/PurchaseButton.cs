@@ -4,7 +4,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace OffersLogic.PurchaseButtonLogic
+namespace OffersLogic.OffersViewLogic.PurchaseButtonLogic
 {
     public class PurchaseButton : MonoBehaviour, IDisposable
     {

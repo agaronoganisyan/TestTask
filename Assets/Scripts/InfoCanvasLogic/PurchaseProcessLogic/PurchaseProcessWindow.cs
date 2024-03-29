@@ -1,3 +1,5 @@
+using System;
+using InfrastructureLogic.StateMachineLogic.Simple;
 using PurchaseLogic.PurchaseHandlerLogic;
 using PurchaseLogic.PurchaseProcessLogic;
 using UniRx;
@@ -6,25 +8,33 @@ using Zenject;
 
 namespace InfoCanvasLogic.PurchaseProcessLogic
 {
-    public abstract class PurchaseProcessWindow : MonoBehaviour
+    public abstract class PurchaseProcessWindow : MonoBehaviour, IDisposable
     {
         private IPurchaseProcess _purchaseProcess;
         
-        private CompositeDisposable _disposable;
+        protected CompositeDisposable _disposable = new CompositeDisposable();
         
         [Inject]
-        private void Construct(DiContainer container)
+        protected virtual void Construct(DiContainer container)
         {
             _purchaseProcess = container.Resolve<IPurchaseProcess>();
         }
         
-        private void Start()
+        public void Update()
         {
-            Setup();
+        }
+        public void Enter()
+        {
+            Show();
+        }
+        public void Exit()
+        {
+            Hide();
         }
 
-        private void Setup()
+        public virtual void Setup()
         {
+            gameObject.SetActive(false);
             //_notEnoughCurrencySystem.OnStarted.Subscribe((value) => Show()).AddTo(_disposable);
         }
 
@@ -42,6 +52,11 @@ namespace InfoCanvasLogic.PurchaseProcessLogic
         {
             _purchaseProcess.Finish();
             gameObject.SetActive(false);
+        }
+
+        public void Dispose()
+        {
+            _disposable?.Dispose();
         }
     }
 }

@@ -1,6 +1,6 @@
-namespace OffersLogic
+namespace OffersLogic.OffersViewLogic
 {
-    public class OfferWithIconAndDescription : Offer
+    public class OfferViewWithIcon : OfferView
     {
         protected override void Execute()
         {
