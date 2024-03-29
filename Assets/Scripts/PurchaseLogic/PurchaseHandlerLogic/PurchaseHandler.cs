@@ -2,12 +2,13 @@ using System;
 using CurrencyLogic;
 using InfoCanvasLogic.NotEnoughCurrencyLogic;
 using InfoCanvasLogic.PurchaseConfirmLogic;
+using PurchaseLogic.PurchaseProcessLogic;
 using UniRx;
 using Zenject;
 
 namespace PurchaseLogic.PurchaseHandlerLogic
 {
-    public enum PurchaseResult
+    public enum PurchaseResultType
     {
         None,
         Complete,
@@ -17,41 +18,35 @@ namespace PurchaseLogic.PurchaseHandlerLogic
     
     public class PurchaseHandler : IPurchaseHandler, IDisposable
     {
-        public ReactiveCommand<PurchaseResult> OnPurchaseFinished { get; }
+        public ReactiveCommand<PurchaseResultType> OnPurchaseFinished { get; }
 
         private ICurrencyHandler _currencyHandler;
-        private IPurchaseConfirmSystem _purchaseConfirmSystem;
-        private INotEnoughCurrencySystem _notEnoughCurrencySystem;
-
+        private IPurchaseProcess _purchaseProcess;
+        
         private CompositeDisposable _disposable;
         
         public PurchaseHandler(DiContainer container)
         {
             _currencyHandler = container.Resolve<ICurrencyHandler>();
-            _purchaseConfirmSystem = container.Resolve<IPurchaseConfirmSystem>();
-            _notEnoughCurrencySystem = container.Resolve<INotEnoughCurrencySystem>();
+            _purchaseProcess = container.Resolve<IPurchaseProcess>();
 
-            OnPurchaseFinished = new ReactiveCommand<PurchaseResult>();
+            OnPurchaseFinished = new ReactiveCommand<PurchaseResultType>();
         }
 
         public void Setup()
         {
-            _purchaseConfirmSystem.OnFinished.Subscribe((result) => OnPurchaseFinished.Execute(result))
-                .AddTo(_disposable);
-            
-            _notEnoughCurrencySystem.OnFinished.Subscribe((result) => OnPurchaseFinished.Execute(result))
-                .AddTo(_disposable);
+            _purchaseProcess.OnFinished.Subscribe((result) => OnPurchaseFinished.Execute(result)).AddTo(_disposable);
         }
 
         public void Process(int price)
         {
             if (_currencyHandler.Amount.Value >= price)
             {
-                _purchaseConfirmSystem.Start();
+                _purchaseProcess.Start(PurchaseProcessType.Confirm);
             }
             else
             {
-                _notEnoughCurrencySystem.Start();
+                _purchaseProcess.Start(PurchaseProcessType.NotEnoughCurrency);
             }
         }
 

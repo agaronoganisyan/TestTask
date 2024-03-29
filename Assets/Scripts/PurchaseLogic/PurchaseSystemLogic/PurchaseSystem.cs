@@ -48,17 +48,17 @@ namespace PurchaseLogic.PurchaseSystemLogic
             _purchaseHandler.Process(price);
         }
 
-        private void ResultProcessing(PurchaseResult result)
+        private void ResultProcessing(PurchaseResultType resultType)
         {
-            switch (result)
+            switch (resultType)
             {
-                case PurchaseResult.Complete:
+                case PurchaseResultType.Complete:
                     _onCompleteCallback?.Execute();
                     break;
-                case PurchaseResult.Cancel:
+                case PurchaseResultType.Cancel:
                     _onCancelCallback?.Execute();
                     break;
-                case PurchaseResult.Failure:
+                case PurchaseResultType.Failure:
                     _onFailureCallback?.Execute();
                     break;
             }
