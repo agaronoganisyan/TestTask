@@ -7,23 +7,18 @@ namespace OffersLogic.OffersViewLogic
 {
     public class OfferWithDescriptionView : OfferView, IPoolable<OfferWithDescriptionView>
     {
-        private Action<OfferView> _returnToPool;
+        private Action<OfferWithDescriptionView> _returnToPool;
         
         [SerializeField] private TextMeshProUGUI _description;
-        
-        protected override void Execute()
-        {
-            
-        }
 
         #region POOL_LOGIC
         
         public void PoolInitialize(Action<OfferWithDescriptionView> returnAction)
         {
-            
+            _returnToPool = returnAction;
         }
         
-        public void ReturnToPool()
+        public override void ReturnToPool()
         {
             _returnToPool?.Invoke(this);
         }

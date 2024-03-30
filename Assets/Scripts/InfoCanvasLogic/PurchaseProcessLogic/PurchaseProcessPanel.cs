@@ -16,6 +16,8 @@ namespace InfoCanvasLogic.PurchaseProcessLogic
         private void Construct(DiContainer container)
         {
             _purchaseProcess = container.Resolve<IPurchaseProcess>();
+
+            _disposable = new CompositeDisposable();
         }
         
         private void Start()
@@ -26,6 +28,7 @@ namespace InfoCanvasLogic.PurchaseProcessLogic
         private void Setup()
         {
             _purchaseProcess.OnStarted.Subscribe((type) => Show()).AddTo(_disposable);
+            _purchaseProcess.OnResultReceived.Subscribe((type) => Hide()).AddTo(_disposable);
 
             gameObject.SetActive(false);
         }
@@ -38,6 +41,8 @@ namespace InfoCanvasLogic.PurchaseProcessLogic
         private void Hide()
         {
             gameObject.SetActive(false);
+            
+            _purchaseProcess.Finish();
         }
         
         public void Dispose()

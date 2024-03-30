@@ -1,6 +1,7 @@
 using System;
 using PurchaseLogic.PurchaseHandlerLogic;
 using UniRx;
+using UnityEngine;
 using Zenject;
 
 namespace PurchaseLogic.PurchaseSystemLogic
@@ -18,6 +19,8 @@ namespace PurchaseLogic.PurchaseSystemLogic
         public PurchaseSystem(DiContainer container)
         {
             _purchaseHandler = container.Resolve<IPurchaseHandler>();
+
+            _disposable = new CompositeDisposable();
         }
 
         public void Setup()

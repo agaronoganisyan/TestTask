@@ -5,6 +5,7 @@ using OffersLogic.FactoryLogic.ConfigLogic;
 using OffersLogic.OffersDataLogic;
 using OffersLogic.OffersViewLogic;
 using PoolLogic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -24,8 +25,8 @@ namespace OffersLogic.FactoryLogic
         
         public override async UniTask Setup()
         {
-            GameObject configPrefab =  await _assetsProvider.Load<GameObject>(FactoryConfigAddress);
-            OfferFactoryConfig config = configPrefab.GetComponent<OfferFactoryConfig>();
+            ScriptableObject configPrefab =  await _assetsProvider.Load<ScriptableObject>(FactoryConfigAddress);
+            OfferFactoryConfig config = (OfferFactoryConfig)configPrefab;//.GetComponent<OfferFactoryConfig>();
             
             _pool.Setup(config.Prefab.GetComponent<OfferWithDescriptionView>(), config.InitialPoolSize);
         }

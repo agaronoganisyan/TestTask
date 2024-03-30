@@ -19,8 +19,8 @@ namespace InfoCanvasLogic.NotEnoughCurrencyLogic
             _state = container.Resolve<NotEnoughCurrencyState>();
         }
 
-        
-        public override void Setup()
+
+        protected override void Setup()
         {
             base.Setup();
 

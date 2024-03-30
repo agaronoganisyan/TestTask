@@ -18,8 +18,8 @@ namespace InfoCanvasLogic.PurchaseConfirmLogic
             
             _state = container.Resolve<PurchaseConfirmState>();
         }
-
-        public override void Setup()
+        
+        protected override void Setup()
         {
             base.Setup();
             
@@ -29,7 +29,7 @@ namespace InfoCanvasLogic.PurchaseConfirmLogic
 
         public void OnConfirm()
         {
-            SetResult(PurchaseResultType.Complete);
+            SetResult(PurchaseResultType.Complete); 
         }
 
         public void OnCancel()

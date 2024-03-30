@@ -23,10 +23,12 @@ namespace PurchaseLogic.PurchaseProcessLogic
 
         public void Enter()
         {
+            OnEntered?.Execute();
         }
 
         public void Exit()
         {
+            OnExit?.Execute();
         }
     }
 }

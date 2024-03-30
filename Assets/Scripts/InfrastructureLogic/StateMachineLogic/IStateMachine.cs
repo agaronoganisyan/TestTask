@@ -9,5 +9,6 @@ namespace InfrastructureLogic.StateMachineLogic
         void Tick();
         void TransitToState(State nextStateKey);
         State GetCurrentState();
+        TState GetState<TState>(State stateKey) where TState : class, IState<State>;
     }
 }

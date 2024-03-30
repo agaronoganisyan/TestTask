@@ -15,9 +15,12 @@ namespace InfrastructureLogic.StateMachineLogic.Simple
 
         public override void TransitToState(State nextStateKey)
         {
-            if (nextStateKey.Equals(_currentTypedState.StateKey)) return;
-            _currentTypedState?.Exit();
-
+            if (_currentTypedState != null)
+            {
+                if (nextStateKey.Equals(_currentTypedState.StateKey)) return;
+                 _currentTypedState.Exit();
+            }
+            
             _currentTypedState = GetState<ISimpleState<State>>(nextStateKey);
             _currentTypedState.Enter();
             SetCurrentState(_currentTypedState);

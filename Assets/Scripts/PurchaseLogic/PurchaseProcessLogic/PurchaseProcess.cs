@@ -3,6 +3,7 @@ using InfrastructureLogic.StateMachineLogic;
 using InfrastructureLogic.StateMachineLogic.Simple;
 using PurchaseLogic.PurchaseHandlerLogic;
 using UniRx;
+using UnityEngine;
 using Zenject;
 
 namespace PurchaseLogic.PurchaseProcessLogic
@@ -17,6 +18,7 @@ namespace PurchaseLogic.PurchaseProcessLogic
     public class PurchaseProcess : IPurchaseProcess, IDisposable
     {
         public ReactiveCommand<PurchaseProcessType> OnStarted { get; }
+        public ReactiveCommand OnResultReceived { get; }
         public ReactiveCommand<PurchaseResultType> OnFinished { get; }
 
         private IStateMachine<PurchaseProcessType> _stateMachine;
@@ -26,9 +28,10 @@ namespace PurchaseLogic.PurchaseProcessLogic
         public PurchaseProcess(DiContainer container)
         {
             OnStarted = new ReactiveCommand<PurchaseProcessType>();
+            OnResultReceived = new ReactiveCommand();
             OnFinished = new ReactiveCommand<PurchaseResultType>();
             
-            _stateMachine = container.Resolve<SimpleStateMachine<PurchaseProcessType>>();
+            _stateMachine = container.Resolve<IStateMachine<PurchaseProcessType>>();
             _stateMachine.Add(PurchaseProcessType.Confirm, container.Resolve<PurchaseConfirmState>());
             _stateMachine.Add(PurchaseProcessType.NotEnoughCurrency, container.Resolve<NotEnoughCurrencyState>());
         }
@@ -43,7 +46,12 @@ namespace PurchaseLogic.PurchaseProcessLogic
             OnStarted?.Execute(purchaseProcessType);
         }
 
-        public void SetResult(PurchaseResultType purchaseResultType) => _purchaseResultType = purchaseResultType;
+        public void SetResult(PurchaseResultType purchaseResultType)
+        {
+            _purchaseResultType = purchaseResultType;
+
+            OnResultReceived?.Execute();
+        }
         
         public void Finish()
         {

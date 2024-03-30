@@ -19,7 +19,7 @@ namespace OffersLogic.OffersViewLogic.PurchaseButtonLogic
             _disposable = new CompositeDisposable();
             OnCLick = new ReactiveCommand();
             
-            _price.text = $"{price}$";
+            _price.text = price > 0 ? $"{price}$" : "FREE";
             _button.OnClickAsObservable().Subscribe((value) => OnCLick.Execute()).AddTo(_disposable);
         }
 

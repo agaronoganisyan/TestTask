@@ -26,17 +26,17 @@ namespace InfrastructureLogic.StateMachineLogic
         {
             return _currentState.StateKey;
         }
-        
-        protected void SetCurrentState(IState<State> state)
-        {
-            _currentState = state;
-        }
 
-        protected TState GetState<TState>(State stateKey) where TState : class, IState<State>
+        public TState GetState<TState>(State stateKey) where TState : class, IState<State>
         {
             if (_states.ContainsKey(stateKey)) return _states[stateKey] as TState;
             
             return null; 
+        }
+
+        protected void SetCurrentState(IState<State> state)
+        {
+            _currentState = state;
         }
     }
 }

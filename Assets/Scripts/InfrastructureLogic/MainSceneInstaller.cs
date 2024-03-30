@@ -24,7 +24,7 @@ namespace InfrastructureLogic
             Container.Bind<IStateMachine<PurchaseProcessType>>().To<SimpleStateMachine<PurchaseProcessType>>().FromNew().AsSingle();
             Container.Bind<NotEnoughCurrencyState>().FromNew().AsSingle();
             Container.Bind<PurchaseConfirmState>().FromNew().AsSingle();
-            Container.Bind<IAssetsProvider>().To<IAssetsProvider>().FromNew().AsSingle();
+            Container.Bind<IAssetsProvider>().To<AssetsProvider>().FromNew().AsSingle();
             
             Container.Bind<ObjectPool<OfferWithDescriptionView>>().FromNew().AsSingle();
             

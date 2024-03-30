@@ -416,7 +416,7 @@ GameObject:
   - component: {fileID: 9151999047262561447}
   - component: {fileID: 8869073722685056772}
   m_Layer: 5
-  m_Name: Id
+  m_Name: Index
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -574,9 +574,9 @@ RectTransform:
   - {fileID: 5578099172141556170}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -424}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -560, y: 116}
   m_SizeDelta: {x: 800, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3431804515718555575
@@ -600,7 +600,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.70980394, g: 0.70980394, b: 0.70980394, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -629,5 +629,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df0f6d0290db43cea3f99f1d3fb0e7be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: {fileID: 8869073722685056772}
+  _background: {fileID: 3157968260055793579}
+  _indexText: {fileID: 8869073722685056772}
+  _evenOfferColor: {r: 0.48627454, g: 0.48627454, b: 0.48627454, a: 1}
+  _oddOfferColor: {r: 0.70980394, g: 0.70980394, b: 0.70980394, a: 1}
   _description: {fileID: 7583792896196135977}

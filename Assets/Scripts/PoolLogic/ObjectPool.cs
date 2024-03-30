@@ -1,17 +1,25 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 using Object = UnityEngine.Object;
 
 namespace PoolLogic
 {
     public class ObjectPool<T> : IPool<T> where T : MonoBehaviour, IPoolable<T>
     {
+        private DiContainer _container;
+        
         private Action _onPushBackAllObjects;
         
         private T _prefab;
         private Stack<T> _pooledObjects = new Stack<T>();
-        
+
+        public ObjectPool(DiContainer container)
+        {
+            _container = container;
+        }
+
         public void Setup(T prefab, int initialSize)
         {
             _prefab = prefab;
@@ -33,6 +41,7 @@ namespace PoolLogic
         {
             if (_pooledObjects.Contains(pushedObject)) return;
             _pooledObjects.Push(pushedObject);
+            pushedObject.transform.SetParent(null);
             pushedObject.gameObject.SetActive(false);
         }
         
@@ -51,7 +60,9 @@ namespace PoolLogic
 
         private void CreateAndAddToPoolNewObject()
         {
-            T createdObject = Object.Instantiate(_prefab).GetComponent<T>();
+            //T createdObject1 = _container.InstantiatePrefab(_prefab).GetComponent<T>();
+            
+            T createdObject = _container.InstantiatePrefab(_prefab).GetComponent<T>();
             _onPushBackAllObjects += createdObject.ReturnToPool;
             createdObject.PoolInitialize(Push);
 
