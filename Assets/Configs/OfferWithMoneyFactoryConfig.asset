@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a25878ab2d94ceb8b6763eabe6b5adc, type: 3}
-  m_Name: OfferWithDescriptionFactoryConfig
+  m_Name: OfferWithMoneyFactoryConfig
   m_EditorClassIdentifier: 
   <InitialPoolSize>k__BackingField: 1
-  <Prefab>k__BackingField: {fileID: 1034424626680175636, guid: 52c17fb8ebaef4ea3a5ebdc5e6643abd, type: 3}
+  <Prefab>k__BackingField: {fileID: 3620222450316681638, guid: 8d18a99f0d25e4503890a25122fb58fc, type: 3}

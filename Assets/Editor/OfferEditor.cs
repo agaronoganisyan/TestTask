@@ -1,54 +1,35 @@
 using OffersLogic.OffersDataLogic;
 using UnityEditor;
 using UnityEngine;
-
 namespace Editor
 {
     // [CustomEditor(typeof(OffersData))]
     // public class OffersDataEditor : UnityEditor.Editor
     // {
-    //     SerializedProperty offerTypeProp;
-    //     SerializedProperty descriptionProp;
-    //     SerializedProperty spriteProp;
-    //     SerializedProperty offersProp;
-    //
-    //     void OnEnable()
-    //     {
-    //         offerTypeProp = serializedObject.FindProperty("offerType");
-    //         descriptionProp = serializedObject.FindProperty("description");
-    //         spriteProp = serializedObject.FindProperty("sprite");
-    //         offersProp = serializedObject.FindProperty("offers");
-    //     }
-    //
     //     public override void OnInspectorGUI()
     //     {
-    //         serializedObject.Update();
+    //         OffersData itemManager = (OffersData)target;
     //
-    //         EditorGUILayout.PropertyField(offerTypeProp);
-    //
-    //         OfferType offerType = (OfferType)offerTypeProp.enumValueIndex;
-    //
-    //         switch (offerType)
+    //         if (GUILayout.Button("Add Item"))
     //         {
-    //             case OfferType.None:
-    //                 // Do nothing
-    //                 break;
-    //             case OfferType.OfferWithDescription:
-    //                 EditorGUILayout.PropertyField(descriptionProp, new GUIContent("Description"));
-    //                 break;
-    //             case OfferType.OfferWithIcon:
-    //                 EditorGUILayout.PropertyField(spriteProp, new GUIContent("Sprite"));
-    //                 break;
-    //             case OfferType.OfferWithDescriptionAndIcon:
-    //                 EditorGUILayout.PropertyField(descriptionProp, new GUIContent("Description"));
-    //                 EditorGUILayout.PropertyField(spriteProp, new GUIContent("Sprite"));
-    //                 break;
+    //             GenericMenu menu = new GenericMenu();
+    //             menu.AddItem(new GUIContent("OfferWithDescription"), false, () => AddItem<OfferWithDescriptionData>(itemManager));
+    //             // menu.AddItem(new GUIContent("Food"), false, () => AddItem<Food>(itemManager));
+    //             // menu.AddItem(new GUIContent("Clothes"), false, () => AddItem<Clothes>(itemManager));
+    //             menu.ShowAsContext();
     //         }
     //
-    //         // Display array of offers
-    //         EditorGUILayout.PropertyField(offersProp, true);
+    //         serializedObject.Update();
+    //         EditorGUILayout.PropertyField(serializedObject.FindProperty("itemList"), true);
+    //         serializedObject.ApplyModifiedProperties();        }
     //
-    //         serializedObject.ApplyModifiedProperties();
+    //     void AddItem<T>(OffersData itemManager) where T : OfferData, new()
+    //     {
+    //         T newItem = new T();
+    //         // newItem.itemName = "New " + typeof(T).Name;
+    //         // newItem.itemID = itemManager.itemList.Count;
+    //         itemManager.itemList.Add(newItem);
+    //         EditorUtility.SetDirty(itemManager); // Обновляем данные в редакторе
     //     }
     // }
 }

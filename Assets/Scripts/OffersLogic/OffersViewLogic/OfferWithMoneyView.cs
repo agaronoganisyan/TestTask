@@ -6,24 +6,24 @@ using UnityEngine;
 
 namespace OffersLogic.OffersViewLogic
 {
-    public class OfferWithDescriptionView : OfferView, IPoolable<OfferWithDescriptionView>
+    public class OfferWithMoneyView : OfferView, IPoolable<OfferWithMoneyView>
     {
-        private Action<OfferWithDescriptionView> _returnToPool;
+        private Action<OfferWithMoneyView> _returnToPool;
         
-        [SerializeField] private TextMeshProUGUI _description;
-
+        [SerializeField] private TextMeshProUGUI _valueText;
+        
         public override void Setup(OfferData data)
         {
             base.Setup(data);
-
-            OfferWithDescriptionData localData = (OfferWithDescriptionData)data;
             
-            _description.text = localData.Description;
-        }
+            OfferWithMoneyData localData = (OfferWithMoneyData)data;
 
+            _valueText.text = $"{localData.Value}$";
+        }
+        
         #region POOL_LOGIC
         
-        public void PoolInitialize(Action<OfferWithDescriptionView> returnAction)
+        public void PoolInitialize(Action<OfferWithMoneyView> returnAction)
         {
             _returnToPool = returnAction;
         }

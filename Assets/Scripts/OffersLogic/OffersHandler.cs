@@ -15,9 +15,9 @@ namespace OffersLogic
 
             Offers = new ReactiveCollection<OfferData>();
             
-            for (int i = 0; i < _data.Offers.Length; i++)
+            for (int i = 0; i < _data.OffersList.Count; i++)
             {
-                Offers.Add(_data.Offers[i]);
+                Offers.Add(_data.OffersList[i]);
             }
         }
 

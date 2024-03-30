@@ -1,29 +1,31 @@
 using System;
+using System;
 using OffersLogic.OffersDataLogic;
 using PoolLogic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OffersLogic.OffersViewLogic
 {
-    public class OfferWithDescriptionView : OfferView, IPoolable<OfferWithDescriptionView>
+    public class OfferWithIconView : OfferView, IPoolable<OfferWithIconView>
     {
-        private Action<OfferWithDescriptionView> _returnToPool;
+        private Action<OfferWithIconView> _returnToPool;
         
-        [SerializeField] private TextMeshProUGUI _description;
-
+        [SerializeField] private Image _icon;
+        
         public override void Setup(OfferData data)
         {
             base.Setup(data);
-
-            OfferWithDescriptionData localData = (OfferWithDescriptionData)data;
             
-            _description.text = localData.Description;
-        }
+            OfferWithIconData localData = (OfferWithIconData)data;
 
+            _icon.sprite = localData.Sprite;
+        }
+        
         #region POOL_LOGIC
         
-        public void PoolInitialize(Action<OfferWithDescriptionView> returnAction)
+        public void PoolInitialize(Action<OfferWithIconView> returnAction)
         {
             _returnToPool = returnAction;
         }

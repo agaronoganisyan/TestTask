@@ -3,27 +3,31 @@ using OffersLogic.OffersDataLogic;
 using PoolLogic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 namespace OffersLogic.OffersViewLogic
 {
-    public class OfferWithDescriptionView : OfferView, IPoolable<OfferWithDescriptionView>
+    public class OfferWithIconAndDescriptionView : OfferView, IPoolable<OfferWithIconAndDescriptionView>
     {
-        private Action<OfferWithDescriptionView> _returnToPool;
+        private Action<OfferWithIconAndDescriptionView> _returnToPool;
         
+        [SerializeField] private Image _icon;
         [SerializeField] private TextMeshProUGUI _description;
 
         public override void Setup(OfferData data)
         {
             base.Setup(data);
-
-            OfferWithDescriptionData localData = (OfferWithDescriptionData)data;
             
+            OfferWithIconAndDescriptionData localData = (OfferWithIconAndDescriptionData)data;
+
+            _icon.sprite = localData.Sprite;
             _description.text = localData.Description;
         }
-
+        
         #region POOL_LOGIC
         
-        public void PoolInitialize(Action<OfferWithDescriptionView> returnAction)
+        public void PoolInitialize(Action<OfferWithIconAndDescriptionView> returnAction)
         {
             _returnToPool = returnAction;
         }

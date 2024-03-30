@@ -11,15 +11,15 @@ using Zenject;
 
 namespace OffersLogic.FactoryLogic
 {
-    public class OffersWithDescriptionFactory : ObjectFactory<OfferWithDescriptionView>
+    public class OfferWithIconFactory : ObjectFactory<OfferWithIconView>
     {
-        private const string FactoryConfigAddress = "OfferWithDescriptionFactoryConfig";
+        private const string FactoryConfigAddress = "OfferWithIconFactoryConfig";
 
         private IAssetsProvider _assetsProvider;
         
-        public OffersWithDescriptionFactory(DiContainer container)
+        public OfferWithIconFactory(DiContainer container)
         {
-            _pool = container.Resolve<ObjectPool<OfferWithDescriptionView>>();
+            _pool = container.Resolve<ObjectPool<OfferWithIconView>>();
             _assetsProvider = container.Resolve<IAssetsProvider>();
         }
         
@@ -28,12 +28,12 @@ namespace OffersLogic.FactoryLogic
             ScriptableObject configPrefab =  await _assetsProvider.Load<ScriptableObject>(FactoryConfigAddress);
             OfferFactoryConfig config = (OfferFactoryConfig)configPrefab;
             
-            _pool.Setup(config.Prefab.GetComponent<OfferWithDescriptionView>(), config.InitialPoolSize);
+            _pool.Setup(config.Prefab.GetComponent<OfferWithIconView>(), config.InitialPoolSize);
         }
 
-        public OfferWithDescriptionView Get(OfferData data)
+        public OfferWithIconView Get(OfferData data)
         {
-            OfferWithDescriptionView offer = base.Get();
+            OfferWithIconView offer = base.Get();
             offer.Setup(data);
             return offer;
         }

@@ -27,8 +27,19 @@ namespace InfrastructureLogic
             Container.Bind<IAssetsProvider>().To<AssetsProvider>().FromNew().AsSingle();
             
             Container.Bind<ObjectPool<OfferWithDescriptionView>>().FromNew().AsSingle();
+            Container.Bind<ObjectPool<OfferWithDoubleDescriptionView>>().FromNew().AsSingle();
+            Container.Bind<ObjectPool<OfferWithDoubleIconView>>().FromNew().AsSingle();
+            Container.Bind<ObjectPool<OfferWithIconAndDescriptionView>>().FromNew().AsSingle();
+            Container.Bind<ObjectPool<OfferWithIconView>>().FromNew().AsSingle();
+            Container.Bind<ObjectPool<OfferWithMoneyView>>().FromNew().AsSingle();
             
             Container.Bind<OffersWithDescriptionFactory>().FromNew().AsSingle();
+            Container.Bind<OfferWithDoubleDescriptionFactory>().FromNew().AsSingle();
+            Container.Bind<OfferWithDoubleIconFactory>().FromNew().AsSingle();
+            Container.Bind<OfferWithIconAndDescriptionFactory>().FromNew().AsSingle();
+            Container.Bind<OfferWithIconFactory>().FromNew().AsSingle();
+            Container.Bind<OfferWithMoneyFactory>().FromNew().AsSingle();
+
             Container.Bind<IOffersFactory>().To<OffersFactory>().FromNew().AsSingle();
             Container.Bind<IOffersHandler>().To<OffersHandler>().FromNew().AsSingle();
             Container.Bind<IPurchaseProcess>().To<PurchaseProcess>().FromNew().AsSingle();
