@@ -21,6 +21,7 @@ namespace CurrencyLogic
             if (amount < 0) return;
             
             Amount.Value += amount;
+            SetDataAmount(Amount.Value);
         }
         
         public void Decrease(int amount)
@@ -30,6 +31,9 @@ namespace CurrencyLogic
             if (Amount.Value < amount) return;
 
             Amount.Value -= amount;
+            SetDataAmount(Amount.Value);
         }
+
+        private void SetDataAmount(int amount) => _data.SetAmount(amount);
     }
 }

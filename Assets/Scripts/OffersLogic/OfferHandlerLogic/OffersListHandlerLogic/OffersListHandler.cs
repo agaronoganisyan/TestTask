@@ -33,6 +33,9 @@ namespace OffersLogic.OfferHandlerLogic.OffersListHandlerLogic
             if (!Offers.Contains(offerData)) return;
 
             Offers.Remove(offerData);
+            RemoveOfferInData(offerData.Data);
         }
+        
+        private void RemoveOfferInData(OfferData data) => _data.Remove(data);
     }
 }
