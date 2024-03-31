@@ -2,8 +2,8 @@ using OffersLogic.OffersDataLogic;
 
 namespace OffersLogic.OfferHandlerLogic.FactoryLogic
 {
-    public interface IOfferHandlerFactory
+    public interface IOfferViewModelFactory
     {
-        OfferHandler Get(OfferData offerData);
+        OfferViewModel Get(OfferModel offerModel);
     }
 }

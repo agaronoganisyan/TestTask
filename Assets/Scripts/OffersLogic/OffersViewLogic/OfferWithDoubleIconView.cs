@@ -16,14 +16,14 @@ namespace OffersLogic.OffersViewLogic
         [SerializeField] private Image _icon_1;
         [SerializeField] private Image _icon_2;
         
-        public override void Setup(OfferHandler offerHandler)
+        public override void Setup(OfferViewModel offerViewModel)
         {
-            base.Setup(offerHandler);
+            base.Setup(offerViewModel);
             
-            OfferWithDoubleIconData localData = (OfferWithDoubleIconData)offerHandler.Data;
+            OfferWithDoubleIconModel localModel = (OfferWithDoubleIconModel)offerViewModel.Model;
 
-            _icon_1.sprite = localData.Icon_1;
-            _icon_2.sprite = localData.Icon_2;
+            _icon_1.sprite = localModel.Icon_1;
+            _icon_2.sprite = localModel.Icon_2;
 
         }
         

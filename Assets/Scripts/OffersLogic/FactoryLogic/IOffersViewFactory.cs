@@ -11,6 +11,6 @@ namespace OffersLogic.FactoryLogic
         ReactiveCommand OnSetuped { get; }
         bool IsSetuped { get; }
         UniTask Setup();
-        OfferView Get(OfferHandler offerHandler);
+        OfferView Get(OfferViewModel offerViewModel);
     }
 }

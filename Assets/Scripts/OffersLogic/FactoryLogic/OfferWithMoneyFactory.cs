@@ -32,10 +32,10 @@ namespace OffersLogic.FactoryLogic
             _pool.Setup(config.Prefab.GetComponent<OfferWithMoneyView>(), config.InitialPoolSize);
         }
 
-        public OfferWithMoneyView Get(OfferHandler offerHandler)
+        public OfferWithMoneyView Get(OfferViewModel offerViewModel)
         {
             OfferWithMoneyView offer = base.Get();
-            offer.Setup(offerHandler);
+            offer.Setup(offerViewModel);
             return offer;
         }
     }

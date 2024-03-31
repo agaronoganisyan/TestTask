@@ -11,16 +11,16 @@ namespace CurrencyLogic
 {
     public class CurrencyView : MonoBehaviour
     {
-        private ICurrencyHandler _currencyHandler;
+        private ICurrencyViewModel _currencyViewModel;
 
         private CompositeDisposable _disposable;
         
-        [FormerlySerializedAs("_value")] [SerializeField] private TextMeshProUGUI _valueText;
+        [SerializeField] private TextMeshProUGUI _valueText;
         
         [Inject]
         private void Construct(DiContainer container)
         {
-            _currencyHandler = container.Resolve<ICurrencyHandler>();
+            _currencyViewModel = container.Resolve<ICurrencyViewModel>();
 
             _disposable = new CompositeDisposable();
         }
@@ -32,9 +32,9 @@ namespace CurrencyLogic
 
         private void Setup()
         {
-            _currencyHandler.Amount.Subscribe((value) => SetValue(value)).AddTo(_disposable);
+            _currencyViewModel.Amount.Subscribe((value) => SetValue(value)).AddTo(_disposable);
 
-            SetValue(_currencyHandler.Amount.Value);
+            SetValue(_currencyViewModel.Amount.Value);
         }
 
         private void SetValue(int value)

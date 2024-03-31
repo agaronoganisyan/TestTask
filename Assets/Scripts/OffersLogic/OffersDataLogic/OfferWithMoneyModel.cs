@@ -3,7 +3,7 @@ using UnityEngine;
 namespace OffersLogic.OffersDataLogic
 {
     [System.Serializable]
-    public class OfferWithMoneyData : OfferData
+    public class OfferWithMoneyModel : OfferModel
     {
         [field: SerializeField] public int Value { get; private set; }
         public override OfferType Type()

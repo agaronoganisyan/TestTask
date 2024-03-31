@@ -674,7 +674,7 @@ GameObject:
   - component: {fileID: 771188817}
   - component: {fileID: 771188819}
   - component: {fileID: 771188821}
-  - component: {fileID: 771188820}
+  - component: {fileID: 771188822}
   m_Layer: 0
   m_Name: SceneContext
   m_TagString: Untagged
@@ -741,95 +741,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d7a249822108426e9c48e9bebf90f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &771188820
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 771188816}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8707d0bf1bc04be2a2ed52ad49341574, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _offersList:
-  - rid: 2430426066561794051
-  - rid: 2430426066561794052
-  - rid: 2430426066561794053
-  - rid: 2430426066561794057
-  - rid: 2430426066561794055
-  - rid: 2430426082023309313
-  - rid: 2430426082023309312
-  - rid: 2430426082023309314
-  - rid: 2430426082023309315
-  - rid: 2430426082023309316
-  - rid: 2430426082023309317
-  - rid: 2430426082023309318
-  references:
-    version: 2
-    RefIds:
-    - rid: 2430426066561794051
-      type: {class: OfferWithDescriptionData, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
-      data:
-        <Description>k__BackingField: Test_1
-        <Price>k__BackingField: 10
-    - rid: 2430426066561794052
-      type: {class: OfferWithDoubleDescriptionData, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
-      data:
-        <Description_1>k__BackingField: Test_1
-        <Description_2>k__BackingField: Test_2
-        <Price>k__BackingField: 200
-    - rid: 2430426066561794053
-      type: {class: OfferWithDoubleIconData, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
-      data:
-        <Icon_1>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-        <Icon_2>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-        <Price>k__BackingField: 400
-    - rid: 2430426066561794055
-      type: {class: OfferWithIconData, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
-      data:
-        <Sprite>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-        <Price>k__BackingField: 0
-    - rid: 2430426066561794057
-      type: {class: OfferWithIconAndDescriptionData, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
-      data:
-        <Sprite>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-        <Description>k__BackingField: Test_1
-        <Price>k__BackingField: 1000
-    - rid: 2430426082023309312
-      type: {class: OfferWithMoneyData, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
-      data:
-        <Value>k__BackingField: 700
-    - rid: 2430426082023309313
-      type: {class: OfferWithMoneyData, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
-      data:
-        <Value>k__BackingField: 350
-    - rid: 2430426082023309314
-      type: {class: OfferWithDoubleDescriptionData, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
-      data:
-        <Description_1>k__BackingField: Test_1
-        <Description_2>k__BackingField: Test_2
-        <Price>k__BackingField: 800
-    - rid: 2430426082023309315
-      type: {class: OfferWithMoneyData, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
-      data:
-        <Value>k__BackingField: 200
-    - rid: 2430426082023309316
-      type: {class: OfferWithMoneyData, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
-      data:
-        <Value>k__BackingField: 500
-    - rid: 2430426082023309317
-      type: {class: OfferWithIconData, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
-      data:
-        <Sprite>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-        <Price>k__BackingField: 80
-    - rid: 2430426082023309318
-      type: {class: OfferWithIconAndDescriptionData, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
-      data:
-        <Sprite>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-        <Description>k__BackingField: Test_1
-        <Price>k__BackingField: 100
 --- !u!114 &771188821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -842,7 +753,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e428cf59d3b4e71ab623d010a867068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Amount>k__BackingField: 3000
+  <Amount>k__BackingField:
+    value: 30000
+--- !u!114 &771188822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 771188816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8707d0bf1bc04be2a2ed52ad49341574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _offersList:
+  - rid: 2430426088787410944
+  - rid: 2430426088787410945
+  - rid: 2430426088787410946
+  - rid: 2430426088787410947
+  - rid: 2430426088787410948
+  - rid: 2430426088787410949
+  references:
+    version: 2
+    RefIds:
+    - rid: 2430426088787410944
+      type: {class: OfferWithDescriptionModel, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
+      data:
+        <Description>k__BackingField: Test_1
+        <Price>k__BackingField: 50
+    - rid: 2430426088787410945
+      type: {class: OfferWithDoubleDescriptionModel, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
+      data:
+        <Description_1>k__BackingField: Test_1
+        <Description_2>k__BackingField: Test_2
+        <Price>k__BackingField: 100
+    - rid: 2430426088787410946
+      type: {class: OfferWithDoubleIconModel, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
+      data:
+        <Icon_1>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+        <Icon_2>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+        <Price>k__BackingField: 150
+    - rid: 2430426088787410947
+      type: {class: OfferWithIconAndDescriptionModel, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
+      data:
+        <Sprite>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+        <Description>k__BackingField: Test_1
+        <Price>k__BackingField: 200
+    - rid: 2430426088787410948
+      type: {class: OfferWithIconModel, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
+      data:
+        <Sprite>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+        <Price>k__BackingField: 300
+    - rid: 2430426088787410949
+      type: {class: OfferWithMoneyModel, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
+      data:
+        <Value>k__BackingField: 400
 --- !u!1 &786716064
 GameObject:
   m_ObjectHideFlags: 0

@@ -32,10 +32,10 @@ namespace OffersLogic.FactoryLogic
             _pool.Setup(config.Prefab.GetComponent<OfferWithDoubleDescriptionView>(), config.InitialPoolSize);
         }
 
-        public OfferWithDoubleDescriptionView Get(OfferHandler offerHandler)
+        public OfferWithDoubleDescriptionView Get(OfferViewModel offerViewModel)
         {
             OfferWithDoubleDescriptionView offer = base.Get();
-            offer.Setup(offerHandler);
+            offer.Setup(offerViewModel);
             return offer;
         }
     }

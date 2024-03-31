@@ -8,13 +8,13 @@ using Zenject;
 
 namespace OffersLogic.OfferHandlerLogic
 {
-    public abstract class OfferHandler
+    public abstract class OfferViewModel
     {
-        public OfferData Data { get; private set; }
+        public OfferModel Model { get; private set; }
 
         private IPurchaseSystem _purchaseSystem;
-        private IOffersListHandler _offersListHandler;
-        protected ICurrencyHandler _currencyHandler;
+        private IOffersListViewModel _offersListViewModel;
+        protected ICurrencyViewModel CurrencyViewModel;
         
         private ReactiveCommand _completeCallback;
         private ReactiveCommand _cancelCallback;
@@ -22,11 +22,11 @@ namespace OffersLogic.OfferHandlerLogic
         
         private CompositeDisposable _disposable;
         
-        public OfferHandler(DiContainer container)
+        public OfferViewModel(DiContainer container)
         {
             _purchaseSystem = container.Resolve<IPurchaseSystem>();
-            _offersListHandler = container.Resolve<IOffersListHandler>();
-            _currencyHandler = container.Resolve<ICurrencyHandler>();
+            _offersListViewModel = container.Resolve<IOffersListViewModel>();
+            CurrencyViewModel = container.Resolve<ICurrencyViewModel>();
             
             _completeCallback = new ReactiveCommand();
             _cancelCallback = new ReactiveCommand();
@@ -35,9 +35,9 @@ namespace OffersLogic.OfferHandlerLogic
             _disposable = new CompositeDisposable();
         }
 
-        public OfferHandler Setup(OfferData data)
+        public OfferViewModel Setup(OfferModel model)
         {
-            Data = data;
+            Model = model;
             
             _completeCallback.Subscribe(_ => CompletedPurchase()).AddTo(_disposable);
             _cancelCallback.Subscribe(_ => CanceledPurchase()).AddTo(_disposable);
@@ -52,7 +52,7 @@ namespace OffersLogic.OfferHandlerLogic
                 .OnCompleteCallback(_completeCallback)
                 .OnCancelCallback(_cancelCallback)
                 .OnFailureCallback(_failureCallback)
-                .Purchase(Data.GetPrice());
+                .Purchase(Model.GetPrice());
         }
         
         private void FailedPurchase()
@@ -67,8 +67,8 @@ namespace OffersLogic.OfferHandlerLogic
         
         private void CompletedPurchase()
         {
-            _currencyHandler.Decrease(Data.GetPrice());
-            _offersListHandler.Remove(this);
+            CurrencyViewModel.Decrease(Model.GetPrice());
+            _offersListViewModel.Remove(Model);
             
             Debug.Log("PURCHASE COMPLETE");
             

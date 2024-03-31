@@ -3,7 +3,7 @@ using UnityEngine;
 namespace OffersLogic.OffersDataLogic
 {
     [System.Serializable]
-    public class OfferWithIconData : OfferData
+    public class OfferWithIconModel : OfferModel
     {
         [field: SerializeField] public Sprite Sprite { get; private set; }
         

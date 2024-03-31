@@ -44,22 +44,22 @@ namespace OffersLogic.FactoryLogic
             SetAsSetuped();
         }
 
-        public OfferView Get(OfferHandler offerHandler)
+        public OfferView Get(OfferViewModel offerViewModel)
         {
-            switch (offerHandler.Data.Type())
+            switch (offerViewModel.Model.Type())
             {
                 case OfferType.OfferWithDescription:
-                    return _offersWithDescriptionFactory.Get(offerHandler);
+                    return _offersWithDescriptionFactory.Get(offerViewModel);
                 case OfferType.OfferWithDoubleDescription:
-                    return _offerWithDoubleDescriptionFactory.Get(offerHandler);
+                    return _offerWithDoubleDescriptionFactory.Get(offerViewModel);
                 case OfferType.OfferWithDoubleIcon:
-                    return _offerWithDoubleIconFactory.Get(offerHandler);
+                    return _offerWithDoubleIconFactory.Get(offerViewModel);
                 case OfferType.OfferWithIconAndDescription:
-                    return _offerWithIconAndDescriptionFactory.Get(offerHandler);
+                    return _offerWithIconAndDescriptionFactory.Get(offerViewModel);
                 case OfferType.OfferWithIcon:
-                    return _offerWithIconFactory.Get(offerHandler);
+                    return _offerWithIconFactory.Get(offerViewModel);
                 case OfferType.OfferWithMoney:
-                    return _offerWithMoneyFactory.Get(offerHandler);
+                    return _offerWithMoneyFactory.Get(offerViewModel);
                 default:
                     return null;
             }

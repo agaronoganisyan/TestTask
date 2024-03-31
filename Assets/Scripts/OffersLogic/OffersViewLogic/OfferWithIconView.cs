@@ -15,13 +15,13 @@ namespace OffersLogic.OffersViewLogic
         
         [SerializeField] private Image _icon;
         
-        public override void Setup(OfferHandler offerHandler)
+        public override void Setup(OfferViewModel offerViewModel)
         {
-            base.Setup(offerHandler);
+            base.Setup(offerViewModel);
             
-            OfferWithIconData localData = (OfferWithIconData)offerHandler.Data;
+            OfferWithIconModel localModel = (OfferWithIconModel)offerViewModel.Model;
 
-            _icon.sprite = localData.Sprite;
+            _icon.sprite = localModel.Sprite;
         }
         
         #region POOL_LOGIC

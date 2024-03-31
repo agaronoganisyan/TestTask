@@ -21,14 +21,14 @@ namespace PurchaseLogic.PurchaseHandlerLogic
     {
         public ReactiveCommand<PurchaseResultType> OnPurchaseFinished { get; }
 
-        private ICurrencyHandler _currencyHandler;
+        private ICurrencyViewModel _currencyViewModel;
         private IPurchaseProcess _purchaseProcess;
         
         private CompositeDisposable _disposable;
         
         public PurchaseHandler(DiContainer container)
         {
-            _currencyHandler = container.Resolve<ICurrencyHandler>();
+            _currencyViewModel = container.Resolve<ICurrencyViewModel>();
             _purchaseProcess = container.Resolve<IPurchaseProcess>();
 
             OnPurchaseFinished = new ReactiveCommand<PurchaseResultType>();
@@ -48,7 +48,7 @@ namespace PurchaseLogic.PurchaseHandlerLogic
             }
             else
             {
-                if (_currencyHandler.Amount.Value >= price)
+                if (_currencyViewModel.Amount.Value >= price)
                 {
                     _purchaseProcess.Start(PurchaseProcessType.Confirm);
                 }

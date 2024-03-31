@@ -12,7 +12,7 @@ namespace OffersLogic.OffersDataLogic
     }
     
     [System.Serializable]
-    public abstract class OfferData
+    public abstract class OfferModel
     {
         public abstract OfferType Type();
         public abstract int GetPrice();

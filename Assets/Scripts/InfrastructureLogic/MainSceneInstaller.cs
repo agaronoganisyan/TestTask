@@ -21,8 +21,8 @@ namespace InfrastructureLogic
     {
         public override void InstallBindings()
         {
-            Container.Bind<CurrencyData>().FromInstance(GetComponent<CurrencyData>()).AsSingle();
-            Container.Bind<OffersData>().FromInstance(GetComponent<OffersData>()).AsSingle();
+            Container.Bind<CurrencyModel>().FromInstance(GetComponent<CurrencyModel>()).AsSingle();
+            Container.Bind<OffersModel>().FromInstance(GetComponent<OffersModel>()).AsSingle();
             
             Container.Bind<IStateMachine<PurchaseProcessType>>().To<SimpleStateMachine<PurchaseProcessType>>().FromNew().AsSingle();
             Container.Bind<NotEnoughCurrencyState>().FromNew().AsSingle();
@@ -43,18 +43,18 @@ namespace InfrastructureLogic
             Container.Bind<OfferWithIconFactory>().FromNew().AsSingle();
             Container.Bind<OfferWithMoneyFactory>().FromNew().AsSingle();
 
-            Container.Bind<OfferWithDescriptionHandler>().FromNew().AsTransient();
-            Container.Bind<OfferWithDoubleDescriptionHandler>().FromNew().AsTransient();
-            Container.Bind<OfferWithDoubleIconHandler>().FromNew().AsTransient();
-            Container.Bind<OfferWithIconAndDescriptionHandler>().FromNew().AsTransient();
-            Container.Bind<OfferWithIconHandler>().FromNew().AsTransient();
-            Container.Bind<OfferWithMoneyHandler>().FromNew().AsTransient();
+            Container.Bind<OfferWithDescriptionViewModel>().FromNew().AsTransient();
+            Container.Bind<OfferWithDoubleDescriptionViewModel>().FromNew().AsTransient();
+            Container.Bind<OfferWithDoubleIconViewModel>().FromNew().AsTransient();
+            Container.Bind<OfferWithIconAndDescriptionViewModel>().FromNew().AsTransient();
+            Container.Bind<OfferWithIconViewModel>().FromNew().AsTransient();
+            Container.Bind<OfferWithMoneyViewModel>().FromNew().AsTransient();
             
-            Container.Bind<IOfferHandlerFactory>().To<OfferHandlerFactory>().FromNew().AsSingle();
+            Container.Bind<IOfferViewModelFactory>().To<OfferViewModelFactory>().FromNew().AsSingle();
             Container.Bind<IOffersViewFactory>().To<OffersViewFactory>().FromNew().AsSingle();
-            Container.Bind<IOffersListHandler>().To<OffersListHandler>().FromNew().AsSingle();
+            Container.Bind<IOffersListViewModel>().To<OffersListViewModel>().FromNew().AsSingle();
             Container.Bind<IPurchaseProcess>().To<PurchaseProcess>().FromNew().AsSingle();
-            Container.Bind<ICurrencyHandler>().To<CurrencyHandler>().FromNew().AsSingle();
+            Container.Bind<ICurrencyViewModel>().To<CurrencyViewModel>().FromNew().AsSingle();
             Container.Bind<IPurchaseSystem>().To<PurchaseSystem>().FromNew().AsSingle();
             Container.Bind<IPurchaseHandler>().To<PurchaseHandler>().FromNew().AsSingle();
         }

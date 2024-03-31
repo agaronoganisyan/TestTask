@@ -3,16 +3,14 @@ using UnityEngine;
 namespace OffersLogic.OffersDataLogic
 {
     [System.Serializable]
-    public class OfferWithIconAndDescriptionData : OfferData
+    public class OfferWithDescriptionModel : OfferModel
     {
-        [field: SerializeField] public Sprite Sprite { get; private set; }
         [field: SerializeField] public string Description { get; private set; }
-        
         [field: SerializeField] public int Price { get; private set; }
 
         public override OfferType Type()
         {
-            return OfferType.OfferWithIconAndDescription;
+            return OfferType.OfferWithDescription;
         }
 
         public override int GetPrice()

@@ -16,14 +16,14 @@ namespace OffersLogic.OffersViewLogic
         [SerializeField] private Image _icon;
         [SerializeField] private TextMeshProUGUI _description;
 
-        public override void Setup(OfferHandler offerHandler)
+        public override void Setup(OfferViewModel offerViewModel)
         {
-            base.Setup(offerHandler);
+            base.Setup(offerViewModel);
             
-            OfferWithIconAndDescriptionData localData = (OfferWithIconAndDescriptionData)offerHandler.Data;
+            OfferWithIconAndDescriptionModel localModel = (OfferWithIconAndDescriptionModel)offerViewModel.Model;
 
-            _icon.sprite = localData.Sprite;
-            _description.text = localData.Description;
+            _icon.sprite = localModel.Sprite;
+            _description.text = localModel.Description;
         }
         
         #region POOL_LOGIC

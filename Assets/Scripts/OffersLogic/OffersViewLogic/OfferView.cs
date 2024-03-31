@@ -16,7 +16,7 @@ namespace OffersLogic.OffersViewLogic
     {
         public int Index { get; private set; }
         
-        private OfferHandler _offerHandler;
+        private OfferViewModel _offerViewModel;
 
         private PurchaseButton _purchaseButton;
 
@@ -57,11 +57,11 @@ namespace OffersLogic.OffersViewLogic
             _rectTransform.anchoredPosition = position;
         }
 
-        public virtual void Setup(OfferHandler offerHandler)
+        public virtual void Setup(OfferViewModel offerViewModel)
         {
-            _offerHandler = offerHandler;
+            _offerViewModel = offerViewModel;
             
-            _purchaseButton.Setup(_offerHandler.Data.GetPrice());
+            _purchaseButton.Setup(_offerViewModel.Model.GetPrice());
             _purchaseButton.OnCLick.Subscribe((value) => Purchase()).AddTo(_disposable);
             gameObject.SetActive(true);
         }
@@ -78,7 +78,7 @@ namespace OffersLogic.OffersViewLogic
 
         private void Purchase()
         {
-            _offerHandler.Purchase();
+            _offerViewModel.Purchase();
         }
     }
 }

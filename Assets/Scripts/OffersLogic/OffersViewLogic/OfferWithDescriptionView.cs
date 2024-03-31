@@ -13,13 +13,13 @@ namespace OffersLogic.OffersViewLogic
         
         [SerializeField] private TextMeshProUGUI _description;
 
-        public override void Setup(OfferHandler offerHandler)
+        public override void Setup(OfferViewModel offerViewModel)
         {
-            base.Setup(offerHandler);
+            base.Setup(offerViewModel);
 
-            OfferWithDescriptionData localData = (OfferWithDescriptionData)offerHandler.Data;
+            OfferWithDescriptionModel localModel = (OfferWithDescriptionModel)offerViewModel.Model;
             
-            _description.text = localData.Description;
+            _description.text = localModel.Description;
         }
 
         #region POOL_LOGIC

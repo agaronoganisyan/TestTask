@@ -11,7 +11,7 @@ namespace OffersLogic.OffersListViewLogic
 {
     public class OffersListView : MonoBehaviour
     {
-        private IOffersListHandler _offersListHandler;
+        private IOffersListViewModel _offersListViewModel;
         private IOffersViewFactory _offersViewFactory;
         
         private CompositeDisposable _disposable;
@@ -28,13 +28,13 @@ namespace OffersLogic.OffersListViewLogic
         private int _numVisible;
 
         private List<OfferView> _offers = new List<OfferView>();
-        private Dictionary<OfferHandler, OfferView> _offerViewPairs = new Dictionary<OfferHandler, OfferView>();
+        private Dictionary<OfferViewModel, OfferView> _offerViewPairs = new Dictionary<OfferViewModel, OfferView>();
         private int _numItems = 0;
 
         [Inject]
         private void Construct(DiContainer container)
         {
-            _offersListHandler = container.Resolve<IOffersListHandler>();
+            _offersListViewModel = container.Resolve<IOffersListViewModel>();
             _offersViewFactory = container.Resolve<IOffersViewFactory>();
             
             _disposable = new CompositeDisposable();
@@ -47,13 +47,13 @@ namespace OffersLogic.OffersListViewLogic
 
         private void Setup()
         {
-            _offersListHandler.Offers.ObserveRemove().Subscribe((offer) => OfferRemoved(offer)).AddTo(_disposable);
+            _offersListViewModel.Offers.ObserveRemove().Subscribe((offer) => OfferRemoved(offer)).AddTo(_disposable);
 
-            if (_offersViewFactory.IsSetuped) CreateOffers(_offersListHandler.Offers);
-            else _offersViewFactory.OnSetuped.Subscribe((value) => CreateOffers(_offersListHandler.Offers)).AddTo(_disposable);
+            if (_offersViewFactory.IsSetuped) CreateOffers(_offersListViewModel.Offers);
+            else _offersViewFactory.OnSetuped.Subscribe((value) => CreateOffers(_offersListViewModel.Offers)).AddTo(_disposable);
         }
 
-        private void CreateOffers(ReactiveCollection<OfferHandler> offers)
+        private void CreateOffers(ReactiveCollection<OfferViewModel> offers)
         {
             int offersAmount = offers.Count;
 
@@ -75,7 +75,7 @@ namespace OffersLogic.OffersListViewLogic
             _container.anchoredPosition = new Vector3(-_container.sizeDelta.x/2,0);
         }
         
-        private void OfferRemoved(CollectionRemoveEvent<OfferHandler> offer)
+        private void OfferRemoved(CollectionRemoveEvent<OfferViewModel> offer)
         {
             if (!_offerViewPairs.ContainsKey(offer.Value)) return;
 
