@@ -2,6 +2,7 @@ using AssetManagementLogic;
 using Cysharp.Threading.Tasks;
 using ObjectFactoryLogic;
 using OffersLogic.FactoryLogic.ConfigLogic;
+using OffersLogic.OfferHandlerLogic;
 using OffersLogic.OffersDataLogic;
 using OffersLogic.OffersViewLogic;
 using PoolLogic;
@@ -31,10 +32,10 @@ namespace OffersLogic.FactoryLogic
             _pool.Setup(config.Prefab.GetComponent<OfferWithMoneyView>(), config.InitialPoolSize);
         }
 
-        public OfferWithMoneyView Get(OfferData data)
+        public OfferWithMoneyView Get(OfferHandler offerHandler)
         {
             OfferWithMoneyView offer = base.Get();
-            offer.Setup(data);
+            offer.Setup(offerHandler);
             return offer;
         }
     }

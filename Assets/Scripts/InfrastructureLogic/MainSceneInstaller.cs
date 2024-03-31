@@ -4,6 +4,9 @@ using InfrastructureLogic.StateMachineLogic;
 using InfrastructureLogic.StateMachineLogic.Simple;
 using OffersLogic;
 using OffersLogic.FactoryLogic;
+using OffersLogic.OfferHandlerLogic;
+using OffersLogic.OfferHandlerLogic.FactoryLogic;
+using OffersLogic.OfferHandlerLogic.OffersListHandlerLogic;
 using OffersLogic.OffersDataLogic;
 using OffersLogic.OffersViewLogic;
 using PoolLogic;
@@ -40,8 +43,16 @@ namespace InfrastructureLogic
             Container.Bind<OfferWithIconFactory>().FromNew().AsSingle();
             Container.Bind<OfferWithMoneyFactory>().FromNew().AsSingle();
 
-            Container.Bind<IOffersFactory>().To<OffersFactory>().FromNew().AsSingle();
-            Container.Bind<IOffersHandler>().To<OffersHandler>().FromNew().AsSingle();
+            Container.Bind<OfferWithDescriptionHandler>().FromNew().AsTransient();
+            Container.Bind<OfferWithDoubleDescriptionHandler>().FromNew().AsTransient();
+            Container.Bind<OfferWithDoubleIconHandler>().FromNew().AsTransient();
+            Container.Bind<OfferWithIconAndDescriptionHandler>().FromNew().AsTransient();
+            Container.Bind<OfferWithIconHandler>().FromNew().AsTransient();
+            Container.Bind<OfferWithMoneyHandler>().FromNew().AsTransient();
+            
+            Container.Bind<IOfferHandlerFactory>().To<OfferHandlerFactory>().FromNew().AsSingle();
+            Container.Bind<IOffersViewFactory>().To<OffersViewFactory>().FromNew().AsSingle();
+            Container.Bind<IOffersListHandler>().To<OffersListHandler>().FromNew().AsSingle();
             Container.Bind<IPurchaseProcess>().To<PurchaseProcess>().FromNew().AsSingle();
             Container.Bind<ICurrencyHandler>().To<CurrencyHandler>().FromNew().AsSingle();
             Container.Bind<IPurchaseSystem>().To<PurchaseSystem>().FromNew().AsSingle();

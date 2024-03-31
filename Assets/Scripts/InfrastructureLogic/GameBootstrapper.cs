@@ -1,5 +1,7 @@
 using AssetManagementLogic;
 using OffersLogic.FactoryLogic;
+using OffersLogic.OfferHandlerLogic;
+using OffersLogic.OfferHandlerLogic.OffersListHandlerLogic;
 using PurchaseLogic.PurchaseHandlerLogic;
 using PurchaseLogic.PurchaseProcessLogic;
 using PurchaseLogic.PurchaseSystemLogic;
@@ -18,13 +20,14 @@ namespace InfrastructureLogic
             _container = container;
         }
         
-        private async void Start()
+        private async void Awake()
         {
-            _container.Resolve<IAssetsProvider>().Initialize();
-            await _container.Resolve<IOffersFactory>().Setup();
+            _container.Resolve<IOffersListHandler>().Setup();
             _container.Resolve<IPurchaseSystem>().Setup();
             _container.Resolve<IPurchaseHandler>().Setup();
-            _container.Resolve<IPurchaseProcess>().Setup();
+            
+            _container.Resolve<IAssetsProvider>().Initialize();
+            await _container.Resolve<IOffersViewFactory>().Setup();
         }
     }
 }

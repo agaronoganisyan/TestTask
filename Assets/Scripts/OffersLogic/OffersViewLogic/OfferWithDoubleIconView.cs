@@ -1,4 +1,5 @@
 using System;
+using OffersLogic.OfferHandlerLogic;
 using OffersLogic.OffersDataLogic;
 using PoolLogic;
 using TMPro;
@@ -15,11 +16,11 @@ namespace OffersLogic.OffersViewLogic
         [SerializeField] private Image _icon_1;
         [SerializeField] private Image _icon_2;
         
-        public override void Setup(OfferData data)
+        public override void Setup(OfferHandler offerHandler)
         {
-            base.Setup(data);
+            base.Setup(offerHandler);
             
-            OfferWithDoubleIconData localData = (OfferWithDoubleIconData)data;
+            OfferWithDoubleIconData localData = (OfferWithDoubleIconData)offerHandler.Data;
 
             _icon_1.sprite = localData.Icon_1;
             _icon_2.sprite = localData.Icon_2;

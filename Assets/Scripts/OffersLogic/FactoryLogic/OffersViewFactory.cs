@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using OffersLogic.OfferHandlerLogic;
 using OffersLogic.OffersDataLogic;
 using OffersLogic.OffersViewLogic;
 using UniRx;
@@ -7,7 +8,7 @@ using Zenject;
 
 namespace OffersLogic.FactoryLogic
 {
-    public class OffersFactory : IOffersFactory
+    public class OffersViewFactory : IOffersViewFactory
     {
         public ReactiveCommand OnSetuped { get; private set; }
         public bool IsSetuped { get; private set; }
@@ -19,7 +20,7 @@ namespace OffersLogic.FactoryLogic
         private OfferWithIconFactory _offerWithIconFactory;
         private OfferWithMoneyFactory _offerWithMoneyFactory;
 
-        public OffersFactory(DiContainer container)
+        public OffersViewFactory(DiContainer container)
         {
             _offersWithDescriptionFactory = container.Resolve<OffersWithDescriptionFactory>();
             _offerWithDoubleDescriptionFactory = container.Resolve<OfferWithDoubleDescriptionFactory>();
@@ -43,22 +44,22 @@ namespace OffersLogic.FactoryLogic
             SetAsSetuped();
         }
 
-        public OfferView Get(OfferData offerData)
+        public OfferView Get(OfferHandler offerHandler)
         {
-            switch (offerData.Type())
+            switch (offerHandler.Data.Type())
             {
                 case OfferType.OfferWithDescription:
-                    return _offersWithDescriptionFactory.Get(offerData);
+                    return _offersWithDescriptionFactory.Get(offerHandler);
                 case OfferType.OfferWithDoubleDescription:
-                    return _offerWithDoubleDescriptionFactory.Get(offerData);
+                    return _offerWithDoubleDescriptionFactory.Get(offerHandler);
                 case OfferType.OfferWithDoubleIcon:
-                    return _offerWithDoubleIconFactory.Get(offerData);
+                    return _offerWithDoubleIconFactory.Get(offerHandler);
                 case OfferType.OfferWithIconAndDescription:
-                    return _offerWithIconAndDescriptionFactory.Get(offerData);
+                    return _offerWithIconAndDescriptionFactory.Get(offerHandler);
                 case OfferType.OfferWithIcon:
-                    return _offerWithIconFactory.Get(offerData);
+                    return _offerWithIconFactory.Get(offerHandler);
                 case OfferType.OfferWithMoney:
-                    return _offerWithMoneyFactory.Get(offerData);
+                    return _offerWithMoneyFactory.Get(offerHandler);
                 default:
                     return null;
             }

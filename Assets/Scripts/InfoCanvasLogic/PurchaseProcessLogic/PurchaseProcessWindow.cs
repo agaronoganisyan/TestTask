@@ -52,7 +52,6 @@ namespace InfoCanvasLogic.PurchaseProcessLogic
         
         private void Hide()
         {
-            // _purchaseProcess.Finish();
             gameObject.SetActive(false);
         }
 

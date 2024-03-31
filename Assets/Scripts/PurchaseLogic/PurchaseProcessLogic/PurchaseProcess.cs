@@ -1,9 +1,7 @@
 using System;
 using InfrastructureLogic.StateMachineLogic;
-using InfrastructureLogic.StateMachineLogic.Simple;
 using PurchaseLogic.PurchaseHandlerLogic;
 using UniRx;
-using UnityEngine;
 using Zenject;
 
 namespace PurchaseLogic.PurchaseProcessLogic
@@ -15,7 +13,7 @@ namespace PurchaseLogic.PurchaseProcessLogic
         NotEnoughCurrency
     }
 
-    public class PurchaseProcess : IPurchaseProcess, IDisposable
+    public class PurchaseProcess : IPurchaseProcess
     {
         public ReactiveCommand<PurchaseProcessType> OnStarted { get; }
         public ReactiveCommand OnResultReceived { get; }
@@ -35,11 +33,7 @@ namespace PurchaseLogic.PurchaseProcessLogic
             _stateMachine.Add(PurchaseProcessType.Confirm, container.Resolve<PurchaseConfirmState>());
             _stateMachine.Add(PurchaseProcessType.NotEnoughCurrency, container.Resolve<NotEnoughCurrencyState>());
         }
-
-        public void Setup()
-        {
-        }
-
+        
         public void Start(PurchaseProcessType purchaseProcessType)
         {
             _stateMachine.TransitToState(purchaseProcessType);
@@ -56,12 +50,6 @@ namespace PurchaseLogic.PurchaseProcessLogic
         public void Finish()
         {
             OnFinished?.Execute(_purchaseResultType);
-        }
-
-        public void Dispose()
-        {
-            OnStarted?.Dispose();
-            OnFinished?.Dispose();
         }
     }
 }

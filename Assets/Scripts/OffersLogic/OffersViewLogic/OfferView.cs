@@ -1,5 +1,6 @@
 using System;
 using CurrencyLogic;
+using OffersLogic.OfferHandlerLogic;
 using OffersLogic.OffersDataLogic;
 using OffersLogic.OffersViewLogic.PurchaseButtonLogic;
 using PurchaseLogic.PurchaseSystemLogic;
@@ -13,23 +14,15 @@ namespace OffersLogic.OffersViewLogic
 {
     public abstract class OfferView : MonoBehaviour, IDisposable
     {
-        private OfferData _data;
+        public int Index { get; private set; }
         
-        private IPurchaseSystem _purchaseSystem;
-        private IOffersHandler _offersHandler;
-        private ICurrencyHandler _currencyHandler;
-        
+        private OfferHandler _offerHandler;
+
         private PurchaseButton _purchaseButton;
 
-        private ReactiveCommand _completeCallback;
-        private ReactiveCommand _cancelCallback;
-        private ReactiveCommand _failureCallback;
-        
         private CompositeDisposable _disposable;
 
         private RectTransform _rectTransform;
-
-        public int Index { get; private set; }
 
         [SerializeField] private Image _background;
         
@@ -39,18 +32,11 @@ namespace OffersLogic.OffersViewLogic
         [SerializeField] private Color _oddOfferColor;
 
         [Inject]
-        private void Construct(DiContainer container)
+        private void Construct()
         {
-            _purchaseSystem = container.Resolve<IPurchaseSystem>();
-            _offersHandler = container.Resolve<IOffersHandler>();
-            _currencyHandler = container.Resolve<ICurrencyHandler>();
-            
             _rectTransform = GetComponent<RectTransform>();
             _purchaseButton = GetComponentInChildren<PurchaseButton>();
             
-            _completeCallback = new ReactiveCommand();
-            _cancelCallback = new ReactiveCommand();
-            _failureCallback = new ReactiveCommand();
             _disposable = new CompositeDisposable();
         }
 
@@ -67,21 +53,15 @@ namespace OffersLogic.OffersViewLogic
             Index = index;
             
             _indexText.text = index.ToString();
-            
             _background.color = index % 2 == 0 ? _evenOfferColor : _oddOfferColor;
-            
             _rectTransform.anchoredPosition = position;
         }
 
-        public virtual void Setup(OfferData data)
+        public virtual void Setup(OfferHandler offerHandler)
         {
-            _data = data;
+            _offerHandler = offerHandler;
             
-            _completeCallback.Subscribe(_ => CompletedPurchase()).AddTo(_disposable);
-            _cancelCallback.Subscribe(_ => CanceledPurchase()).AddTo(_disposable);
-            _failureCallback.Subscribe(_ => FailedPurchase()).AddTo(_disposable);
-            
-            _purchaseButton.Setup(_data.GetPrice());
+            _purchaseButton.Setup(_offerHandler.Data.GetPrice());
             _purchaseButton.OnCLick.Subscribe((value) => Purchase()).AddTo(_disposable);
             gameObject.SetActive(true);
         }
@@ -98,36 +78,7 @@ namespace OffersLogic.OffersViewLogic
 
         private void Purchase()
         {
-            _purchaseSystem
-                .OnCompleteCallback(_completeCallback)
-                .OnCancelCallback(_cancelCallback)
-                .OnFailureCallback(_failureCallback)
-                .Purchase(_data.GetPrice());
-        }
-        
-        private void FailedPurchase()
-        {
-            Debug.Log("PURCHASE FAILED");
-        }
-        
-        private void CanceledPurchase()
-        {
-            Debug.Log("PURCHASE CANCELED");
-        }
-        
-        private void CompletedPurchase()
-        {
-            _currencyHandler.Decrease(_data.GetPrice());
-            _offersHandler.Remove(_data);
-            
-            Debug.Log("PURCHASE COMPLETE");
-            
-            Execute();
-        }
-
-        protected virtual void Execute()
-        {
-            
+            _offerHandler.Purchase();
         }
     }
 }

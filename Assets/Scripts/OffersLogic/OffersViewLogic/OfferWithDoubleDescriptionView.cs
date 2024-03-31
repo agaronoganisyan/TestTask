@@ -1,4 +1,5 @@
 using System;
+using OffersLogic.OfferHandlerLogic;
 using OffersLogic.OffersDataLogic;
 using PoolLogic;
 using TMPro;
@@ -14,11 +15,11 @@ namespace OffersLogic.OffersViewLogic
         [SerializeField] private TextMeshProUGUI _description_1;
         [SerializeField] private TextMeshProUGUI _description_2;
 
-        public override void Setup(OfferData data)
+        public override void Setup(OfferHandler offerHandler)
         {
-            base.Setup(data);
+            base.Setup(offerHandler);
             
-            OfferWithDoubleDescriptionData localData = (OfferWithDoubleDescriptionData)data;
+            OfferWithDoubleDescriptionData localData = (OfferWithDoubleDescriptionData)offerHandler.Data;
 
             _description_1.text = localData.Description_1;
             _description_2.text = localData.Description_2;
