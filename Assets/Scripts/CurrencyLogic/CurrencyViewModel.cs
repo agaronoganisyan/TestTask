@@ -1,8 +1,9 @@
+using System;
 using UniRx;
 
 namespace CurrencyLogic
 {
-    public class CurrencyViewModel : ICurrencyViewModel
+    public class CurrencyViewModel : ICurrencyViewModel, IDisposable
     {
         public ReactiveProperty<int> Amount { get; }
 
@@ -41,5 +42,10 @@ namespace CurrencyLogic
         }
 
         private void ChangeAmount(int amount) => Amount.Value = amount;
+
+        public void Dispose()
+        {
+            _disposable?.Dispose();
+        }
     }
 }

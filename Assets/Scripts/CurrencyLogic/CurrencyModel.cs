@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using OffersLogic.OffersDataLogic;
-using OffersLogic.OffersViewLogic.PurchaseButtonLogic;
 using UniRx;
 using UnityEngine;
-using Zenject;
 
 namespace CurrencyLogic
 {

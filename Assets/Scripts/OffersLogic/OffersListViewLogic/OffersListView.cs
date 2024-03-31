@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using OffersLogic.FactoryLogic;
 using OffersLogic.OfferHandlerLogic;
@@ -9,7 +10,7 @@ using Zenject;
 
 namespace OffersLogic.OffersListViewLogic
 {
-    public class OffersListView : MonoBehaviour
+    public class OffersListView : MonoBehaviour, IDisposable
     {
         private IOffersListViewModel _offersListViewModel;
         private IOffersViewFactory _offersViewFactory;
@@ -101,6 +102,11 @@ namespace OffersLogic.OffersListViewLogic
         private Vector2 GetPositionByIndex(int index)
         {
             return _startPos + _offsetVec * index * PrefabSize - _offerPrefabHalfSize;
+        }
+
+        public void Dispose()
+        {
+            _disposable?.Dispose();
         }
     }
 }

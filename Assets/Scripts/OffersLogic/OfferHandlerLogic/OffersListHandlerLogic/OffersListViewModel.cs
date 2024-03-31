@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using OffersLogic.OfferHandlerLogic.FactoryLogic;
 using OffersLogic.OffersDataLogic;
@@ -7,7 +8,7 @@ using Zenject;
 
 namespace OffersLogic.OfferHandlerLogic.OffersListHandlerLogic
 {
-    public class OffersListViewModel : IOffersListViewModel
+    public class OffersListViewModel : IOffersListViewModel, IDisposable
     {
         public ReactiveCollection<OfferViewModel> Offers { get; }
 
@@ -51,6 +52,11 @@ namespace OffersLogic.OfferHandlerLogic.OffersListHandlerLogic
                     Offers.RemoveAt(i);
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            _disposable?.Dispose();
         }
     }
 }

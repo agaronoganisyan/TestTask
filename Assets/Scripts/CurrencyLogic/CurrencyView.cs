@@ -1,15 +1,12 @@
 using System;
-using OffersLogic.OffersViewLogic.PurchaseButtonLogic;
-using PurchaseLogic.PurchaseSystemLogic;
 using TMPro;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace CurrencyLogic
 {
-    public class CurrencyView : MonoBehaviour
+    public class CurrencyView : MonoBehaviour, IDisposable
     {
         private ICurrencyViewModel _currencyViewModel;
 
@@ -40,6 +37,11 @@ namespace CurrencyLogic
         private void SetValue(int value)
         {
             _valueText.text = value.ToString();
+        }
+
+        public void Dispose()
+        {
+            _disposable?.Dispose();
         }
     }
 }
