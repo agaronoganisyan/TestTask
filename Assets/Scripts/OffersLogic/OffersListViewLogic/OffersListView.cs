@@ -27,9 +27,7 @@ namespace OffersLogic.OffersListViewLogic
         private readonly Vector3 _offsetVec = Vector3.down;
 
         private int _numVisible;
-
-        private List<OfferView> _offers = new List<OfferView>();
-        private Dictionary<OfferViewModel, OfferView> _offerViewPairs = new Dictionary<OfferViewModel, OfferView>();
+        
         private int _numItems = 0;
 
         [Inject]
@@ -65,12 +63,9 @@ namespace OffersLogic.OffersListViewLogic
             
             for (int i = 0; i < _numItems; i++)
             {
-                OfferView offer = _offersViewFactory.Get(offers[i]);
+                _offersViewFactory.Get(offers[i]);
                 
-                offer.SetParentAndPosition(_container.transform,i+1,GetPositionByIndex(i));
-                
-                _offers.Add(offer);
-                _offerViewPairs.Add(offers[i], offer);
+                offers[i].SetParentAndPosition(_container.transform,i+1,GetPositionByIndex(i));
             }
             
             _container.anchoredPosition = new Vector3(-_container.sizeDelta.x/2,0);
@@ -78,24 +73,18 @@ namespace OffersLogic.OffersListViewLogic
         
         private void OfferRemoved(CollectionRemoveEvent<OfferViewModel> offer)
         {
-            if (!_offerViewPairs.ContainsKey(offer.Value)) return;
+            int startIndex = offer.Value.Index.Value;
 
-            OfferView offerToRemove = _offerViewPairs[offer.Value];
-            
-            int startIndex = offerToRemove.Index;
-
-            for (int i = startIndex; i < _offerViewPairs.Count; i++)  
+            for (int i = startIndex; i < _offersListViewModel.Offers.Count; i++)  
             {
-                _offers[i].SetPosition(i, GetPositionByIndex(i-1));
+                _offersListViewModel.Offers[i].SetPosition(i, GetPositionByIndex(i-1));
             }
 
             Vector2 sizeDelta = _container.sizeDelta;
             sizeDelta = new Vector2(sizeDelta.x, sizeDelta.y - PrefabSize);
             _container.sizeDelta = sizeDelta;
 
-            offerToRemove.ReturnToPool();
-            _offers.Remove(offerToRemove);
-            _offerViewPairs.Remove(offer.Value);
+            offer.Value.ReturnToPool();
             _numItems--;
         }
 

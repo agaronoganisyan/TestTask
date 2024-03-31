@@ -14,8 +14,6 @@ namespace OffersLogic.OffersViewLogic
 {
     public abstract class OfferView : MonoBehaviour, IDisposable
     {
-        public int Index { get; private set; }
-        
         private OfferViewModel _offerViewModel;
 
         private PurchaseButton _purchaseButton;
@@ -40,26 +38,15 @@ namespace OffersLogic.OffersViewLogic
             _disposable = new CompositeDisposable();
         }
 
-        public void SetParentAndPosition(Transform parent, int index, Vector2 position)
-        {
-            _rectTransform.SetParent(parent);
-            _rectTransform.localScale = Vector3.one;
-            
-            SetPosition(index,position);
-        }
-
-        public void SetPosition(int index, Vector2 position)
-        {
-            Index = index;
-            
-            _indexText.text = index.ToString();
-            _background.color = index % 2 == 0 ? _evenOfferColor : _oddOfferColor;
-            _rectTransform.anchoredPosition = position;
-        }
-
         public virtual void Setup(OfferViewModel offerViewModel)
         {
             _offerViewModel = offerViewModel;
+
+            _offerViewModel.Index.Subscribe((value) => SetIndex(value)).AddTo(_disposable);
+            _offerViewModel.ParentTransform.Subscribe((value) => SetParent(value)).AddTo(_disposable);
+            _offerViewModel.Position.Subscribe((value) => SetPosition(value)).AddTo(_disposable);       
+            _offerViewModel.ReturnToPoolCommand.Subscribe((value) => ReturnToPool()).AddTo(_disposable);       
+
             
             _purchaseButton.Setup(_offerViewModel.Model.GetPrice());
             _purchaseButton.OnCLick.Subscribe((value) => Purchase()).AddTo(_disposable);
@@ -76,6 +63,19 @@ namespace OffersLogic.OffersViewLogic
             _disposable?.Dispose();
         }
 
+        private void SetParent(Transform parent)
+        {
+            _rectTransform.SetParent(parent);
+            _rectTransform.localScale = Vector3.one;
+        } 
+        private void SetPosition(Vector2 position) => _rectTransform.anchoredPosition = position;
+
+        private void SetIndex(int index)
+        {
+            _indexText.text = index.ToString();
+            _background.color = index % 2 == 0 ? _evenOfferColor : _oddOfferColor;
+        }
+        
         private void Purchase()
         {
             _offerViewModel.Purchase();

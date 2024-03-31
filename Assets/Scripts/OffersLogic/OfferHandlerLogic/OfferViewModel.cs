@@ -10,9 +10,13 @@ using Zenject;
 namespace OffersLogic.OfferHandlerLogic
 {
     public abstract class OfferViewModel : IDisposable
-
     {
     public OfferModel Model { get; private set; }
+
+    public ReactiveProperty<int> Index { get; private set; }
+    public ReactiveProperty<Transform> ParentTransform { get; private set; }
+    public ReactiveProperty<Vector2> Position { get; private set; }
+    public ReactiveCommand ReturnToPoolCommand { get; private set; }
 
     private IPurchaseSystem _purchaseSystem;
     private IOffersListViewModel _offersListViewModel;
@@ -30,6 +34,11 @@ namespace OffersLogic.OfferHandlerLogic
         _offersListViewModel = container.Resolve<IOffersListViewModel>();
         CurrencyViewModel = container.Resolve<ICurrencyViewModel>();
 
+        ParentTransform = new ReactiveProperty<Transform>();
+        Position = new ReactiveProperty<Vector2>();
+        Index = new ReactiveProperty<int>();
+
+        ReturnToPoolCommand = new ReactiveCommand();
         _completeCallback = new ReactiveCommand();
         _cancelCallback = new ReactiveCommand();
         _failureCallback = new ReactiveCommand();
@@ -55,6 +64,24 @@ namespace OffersLogic.OfferHandlerLogic
             .OnCancelCallback(_cancelCallback)
             .OnFailureCallback(_failureCallback)
             .Purchase(Model.GetPrice());
+    }
+
+    public void SetParentAndPosition(Transform parent, int index, Vector2 position)
+    {
+        ParentTransform.Value = parent;
+        Index.Value = index;
+        Position.Value = position;
+    }
+
+    public void SetPosition(int index, Vector2 position)
+    {
+        Index.Value = index;
+        Position.Value = position;
+    }
+
+    public void ReturnToPool()
+    {
+        ReturnToPoolCommand?.Execute();
     }
 
     private void FailedPurchase()
