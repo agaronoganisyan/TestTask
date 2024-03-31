@@ -794,7 +794,7 @@ MonoBehaviour:
       data:
         <Icon_1>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
         <Icon_2>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-        <Price>k__BackingField: 150
+        <Price>k__BackingField: 0
     - rid: 2430426088787410947
       type: {class: OfferWithIconAndDescriptionModel, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
       data:

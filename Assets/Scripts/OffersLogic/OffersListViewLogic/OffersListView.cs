@@ -73,11 +73,11 @@ namespace OffersLogic.OffersListViewLogic
         
         private void OfferRemoved(CollectionRemoveEvent<OfferViewModel> offer)
         {
-            int startIndex = offer.Value.Index.Value;
+            int startIndex = offer.Value.Index.Value-1;
 
             for (int i = startIndex; i < _offersListViewModel.Offers.Count; i++)  
             {
-                _offersListViewModel.Offers[i].SetPosition(i, GetPositionByIndex(i-1));
+                _offersListViewModel.Offers[i].SetPosition(i+1, GetPositionByIndex(i));
             }
 
             Vector2 sizeDelta = _container.sizeDelta;
