@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using OffersLogic.FactoryLogic;
 using OffersLogic.OfferHandlerLogic;
 using OffersLogic.OfferHandlerLogic.OffersListHandlerLogic;
-using OffersLogic.OffersViewLogic;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace OffersLogic.OffersListViewLogic
@@ -16,9 +16,10 @@ namespace OffersLogic.OffersListViewLogic
         private IOffersViewFactory _offersViewFactory;
         
         private CompositeDisposable _disposable;
-        
+
         [SerializeField] private RectTransform _container;
         [SerializeField] private RectTransform _maskRT;
+        [SerializeField] private Scrollbar _scrollbar;
         private const float Spacing = 20;
         private const float OfferSizeY = 90;
         private const float PrefabSize = OfferSizeY + Spacing;
@@ -26,10 +27,14 @@ namespace OffersLogic.OffersListViewLogic
         private readonly Vector3 _startPos = Vector2.zero;
         private readonly Vector3 _offsetVec = Vector3.down;
 
+        private readonly int _numBuffer = 2;
         private int _numVisible;
+        private int _numItems;
+        private int _numAllItems;
+        private int _previousOriginalIndex;
         
-        private int _numItems = 0;
-
+        private List<OfferViewModel> _pooledItems = new List<OfferViewModel>();
+        
         [Inject]
         private void Construct(DiContainer container)
         {
@@ -46,53 +51,111 @@ namespace OffersLogic.OffersListViewLogic
 
         private void Setup()
         {
-            _offersListViewModel.Offers.ObserveRemove().Subscribe((offer) => OfferRemoved(offer)).AddTo(_disposable);
+            _scrollbar.onValueChanged.AsObservable().Subscribe(ScrollRectWasMoved).AddTo(_disposable);
+            
+            _offersListViewModel.OfferRemoved.Subscribe((offer) => OfferRemoved(offer)).AddTo(_disposable);
 
             if (_offersViewFactory.IsSetuped) CreateOffers(_offersListViewModel.Offers);
             else _offersViewFactory.OnSetuped.Subscribe((value) => CreateOffers(_offersListViewModel.Offers)).AddTo(_disposable);
         }
 
-        private void CreateOffers(ReactiveCollection<OfferViewModel> offers)
+        private void CreateOffers(IReadOnlyReactiveCollection<OfferViewModel> offers)
         {
-            int offersAmount = offers.Count;
+            _numAllItems = offers.Count;
 
-            _container.sizeDelta = new Vector2(_container.sizeDelta.x, PrefabSize * offersAmount);
+            _container.sizeDelta = new Vector2(_container.sizeDelta.x, PrefabSize * _numAllItems);
 
             _numVisible = Mathf.CeilToInt(_maskRT.rect.size.y / PrefabSize);
-            _numItems = offersAmount;
+            
+            _numItems = Mathf.Min(_numAllItems, _numVisible + _numBuffer);
             
             for (int i = 0; i < _numItems; i++)
             {
                 _offersViewFactory.Get(offers[i]);
                 
-                offers[i].SetParentAndPosition(_container.transform,i+1,GetPositionByIndex(i));
+                offers[i].SetParentAndPosition(_container.transform,i + 1, GetPositionByIndex(i));
+                
+                AddItemToPool(offers[i]);
             }
             
             _container.anchoredPosition = new Vector3(-_container.sizeDelta.x/2,0);
+            _previousOriginalIndex = 0;
         }
         
-        private void OfferRemoved(CollectionRemoveEvent<OfferViewModel> offer)
+        private void OfferRemoved(OfferViewModel offer)
         {
-            int startIndex = offer.Value.Index.Value-1;
+            Vector2 containerSize = _container.sizeDelta;
+            containerSize = new Vector2(containerSize.x, containerSize.y - PrefabSize);
+            _container.sizeDelta = containerSize;
 
-            for (int i = startIndex; i < _offersListViewModel.Offers.Count; i++)  
-            {
-                _offersListViewModel.Offers[i].SetPosition(i+1, GetPositionByIndex(i));
-            }
-
-            Vector2 sizeDelta = _container.sizeDelta;
-            sizeDelta = new Vector2(sizeDelta.x, sizeDelta.y - PrefabSize);
-            _container.sizeDelta = sizeDelta;
-
-            offer.Value.ReturnToPool();
-            _numItems--;
+            _numAllItems--;
+            RemoveItemFromPool(offer);
+            ReorderItemsByPos(_scrollbar.value, true);
         }
 
+        private void ScrollRectWasMoved(float normPos)
+        {
+            ReorderItemsByPos(normPos);
+        }
+
+        private void ReorderItemsByPos(float normPos, bool offerWasRemoved = false)
+        {
+            normPos = 1f - normPos;
+            int numItemsBeyondTopBoundary = Mathf.FloorToInt(normPos * (_numAllItems - _numVisible));
+            int originalIndex = numItemsBeyondTopBoundary < 0 ? 0 :numItemsBeyondTopBoundary;
+            
+            bool originalIndexChanged = originalIndex != _previousOriginalIndex ? true : false;
+            if (originalIndexChanged) _previousOriginalIndex = originalIndex;
+
+            int newIndex = originalIndex;
+
+            if (!originalIndexChanged && !offerWasRemoved) return;
+            
+            RemoveAllItemFromPool();
+            
+            for (int i = 0; i < _numItems; i++)
+            {
+                if (newIndex >= _numAllItems) break;
+                
+                CreateItemByIndex(newIndex);
+
+                newIndex++;
+            }
+        }
+
+        private void CreateItemByIndex(int index)
+        {
+            OfferViewModel newOffer = _offersListViewModel.Offers[index];
+            _offersViewFactory.Get(newOffer);
+            newOffer.SetParentAndPosition(_container.transform, index + 1, GetPositionByIndex(index));
+            AddItemToPool(newOffer);
+        }
+
+        private void AddItemToPool(OfferViewModel viewModel)
+        {
+            _pooledItems.Add(viewModel);
+        }
+        
+        private void RemoveItemFromPool(OfferViewModel viewModel)
+        {
+            _pooledItems.Remove(viewModel);
+        }
+
+        private void RemoveAllItemFromPool()
+        {
+            for (int i = 0; i < _pooledItems.Count; i++)
+            {
+                _pooledItems[i].ReturnToPool();
+            }
+            
+            _pooledItems.Clear();
+        }
+        
         private Vector2 GetPositionByIndex(int index)
         {
             return _startPos + _offsetVec * index * PrefabSize - _offerPrefabHalfSize;
         }
-
+        
         public void Dispose()
         {
             _disposable?.Dispose();

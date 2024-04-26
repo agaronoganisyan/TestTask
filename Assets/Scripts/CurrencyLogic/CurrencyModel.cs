@@ -7,8 +7,10 @@ namespace CurrencyLogic
     [Serializable]
     public class CurrencyModel : MonoBehaviour
     {
-        [field: SerializeField] public ReactiveProperty<int> Amount { get; private set; }
+
+        public IReadOnlyReactiveProperty<int> Amount => _amount;
+        [SerializeField] private ReactiveProperty<int> _amount;
         
-        public void SetAmount(int amount) => Amount.Value = amount;
+        public void SetAmount(int amount) => _amount.Value = amount;
     }
 }

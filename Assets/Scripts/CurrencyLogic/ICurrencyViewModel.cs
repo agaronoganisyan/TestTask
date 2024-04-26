@@ -4,7 +4,7 @@ namespace CurrencyLogic
 {
     public interface ICurrencyViewModel
     {
-        ReactiveProperty<int> Amount { get; }
+        IReadOnlyReactiveProperty<int> Amount { get; }
         void Setup();
         void Increase(int amount);
         void Decrease(int amount);

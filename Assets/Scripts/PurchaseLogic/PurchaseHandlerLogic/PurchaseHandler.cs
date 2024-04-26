@@ -23,9 +23,10 @@ namespace PurchaseLogic.PurchaseHandlerLogic
 
         private ICurrencyViewModel _currencyViewModel;
         private IPurchaseProcess _purchaseProcess;
-        
+
         private CompositeDisposable _disposable;
-        
+
+
         public PurchaseHandler(DiContainer container)
         {
             _currencyViewModel = container.Resolve<ICurrencyViewModel>();

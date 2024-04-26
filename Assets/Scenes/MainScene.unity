@@ -448,7 +448,7 @@ MonoBehaviour:
   m_Content: {fileID: 1611005785}
   m_Horizontal: 0
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -462,20 +462,7 @@ MonoBehaviour:
   m_VerticalScrollbarSpacing: -3
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 696476044}
-        m_TargetAssemblyTypeName: OffersLogic.OffersListViewLogic.OffersListView,
-          Assembly-CSharp
-        m_MethodName: ReorderItemsByPos
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &696476042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,6 +515,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _container: {fileID: 1611005785}
   _maskRT: {fileID: 1477500606}
+  _scrollbar: {fileID: 1490368256}
 --- !u!1 &745259502
 GameObject:
   m_ObjectHideFlags: 0
@@ -753,8 +741,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e428cf59d3b4e71ab623d010a867068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Amount>k__BackingField:
-    value: 300
+  _amount:
+    value: 500
 --- !u!114 &771188822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -775,6 +763,12 @@ MonoBehaviour:
   - rid: 2430426088787410948
   - rid: 2430426088787410949
   - rid: 2430426092098813952
+  - rid: 5702840312846090240
+  - rid: 5702840312846090241
+  - rid: 5702840312846090242
+  - rid: 5702840312846090243
+  - rid: 5702840312846090244
+  - rid: 5702840312846090245
   references:
     version: 2
     RefIds:
@@ -811,6 +805,36 @@ MonoBehaviour:
       data:
         <Value>k__BackingField: 400
     - rid: 2430426092098813952
+      type: {class: OfferWithMoneyModel, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
+      data:
+        <Value>k__BackingField: 500
+    - rid: 5702840312846090240
+      type: {class: OfferWithDescriptionModel, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
+      data:
+        <Description>k__BackingField: Test_1
+        <Price>k__BackingField: 85
+    - rid: 5702840312846090241
+      type: {class: OfferWithDoubleDescriptionModel, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
+      data:
+        <Description_1>k__BackingField: Test_1
+        <Description_2>k__BackingField: Test_2
+        <Price>k__BackingField: 500
+    - rid: 5702840312846090242
+      type: {class: OfferWithIconModel, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
+      data:
+        <Sprite>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+        <Price>k__BackingField: 70
+    - rid: 5702840312846090243
+      type: {class: OfferWithMoneyModel, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
+      data:
+        <Value>k__BackingField: 5000
+    - rid: 5702840312846090244
+      type: {class: OfferWithDoubleDescriptionModel, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
+      data:
+        <Description_1>k__BackingField: Test_1
+        <Description_2>k__BackingField: Test_2
+        <Price>k__BackingField: 0
+    - rid: 5702840312846090245
       type: {class: OfferWithMoneyModel, ns: OffersLogic.OffersDataLogic, asm: Assembly-CSharp}
       data:
         <Value>k__BackingField: 500

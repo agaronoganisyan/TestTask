@@ -11,107 +11,116 @@ namespace OffersLogic.OfferHandlerLogic
 {
     public abstract class OfferViewModel : IDisposable
     {
-    public OfferModel Model { get; private set; }
+        public OfferModel Model { get; private set; }
 
-    public ReactiveProperty<int> Index { get; private set; }
-    public ReactiveProperty<Transform> ParentTransform { get; private set; }
-    public ReactiveProperty<Vector2> Position { get; private set; }
-    public ReactiveCommand ReturnToPoolCommand { get; private set; }
+        public IReadOnlyReactiveProperty<int> Index => _index;
+        private ReactiveProperty<int> _index;
+        public IReadOnlyReactiveProperty<Transform> ParentTransform => _parentTransform;
+        private ReactiveProperty<Transform> _parentTransform;
+        public IReadOnlyReactiveProperty<Vector2> Position => _position;
+        private ReactiveProperty<Vector2> _position;
 
-    private IPurchaseSystem _purchaseSystem;
-    private IOffersListViewModel _offersListViewModel;
-    protected ICurrencyViewModel CurrencyViewModel;
+        public ReactiveCommand<Unit> ReturnedToPool { get; }
 
-    private ReactiveCommand _completeCallback;
-    private ReactiveCommand _cancelCallback;
-    private ReactiveCommand _failureCallback;
+        private IPurchaseSystem _purchaseSystem;
+        private IOffersListViewModel _offersListViewModel;
+        protected ICurrencyViewModel CurrencyViewModel;
 
-    private CompositeDisposable _disposable;
+        private ReactiveCommand _completeCallback;
+        private ReactiveCommand _cancelCallback;
+        private ReactiveCommand _failureCallback;
 
-    public OfferViewModel(DiContainer container)
-    {
-        _purchaseSystem = container.Resolve<IPurchaseSystem>();
-        _offersListViewModel = container.Resolve<IOffersListViewModel>();
-        CurrencyViewModel = container.Resolve<ICurrencyViewModel>();
+        private CompositeDisposable _disposable;
 
-        ParentTransform = new ReactiveProperty<Transform>();
-        Position = new ReactiveProperty<Vector2>();
-        Index = new ReactiveProperty<int>();
+        public OfferViewModel(DiContainer container)
+        {
+            _purchaseSystem = container.Resolve<IPurchaseSystem>();
+            _offersListViewModel = container.Resolve<IOffersListViewModel>();
+            CurrencyViewModel = container.Resolve<ICurrencyViewModel>();
 
-        ReturnToPoolCommand = new ReactiveCommand();
-        _completeCallback = new ReactiveCommand();
-        _cancelCallback = new ReactiveCommand();
-        _failureCallback = new ReactiveCommand();
+            _parentTransform = new ReactiveProperty<Transform>();
+            _position = new ReactiveProperty<Vector2>();
+            _index = new ReactiveProperty<int>();
 
-        _disposable = new CompositeDisposable();
-    }
+            ReturnedToPool = new ReactiveCommand();
+            _completeCallback = new ReactiveCommand();
+            _cancelCallback = new ReactiveCommand();
+            _failureCallback = new ReactiveCommand();
 
-    public OfferViewModel Setup(OfferModel model)
-    {
-        Model = model;
+            _disposable = new CompositeDisposable();
+        }
+   
+        public OfferViewModel Setup(OfferModel model)
+        {
+            Model = model;
+        
+            _completeCallback.Subscribe(_ => CompletedPurchase()).AddTo(_disposable);
+            _cancelCallback.Subscribe(_ => CanceledPurchase()).AddTo(_disposable);
+            _failureCallback.Subscribe(_ => FailedPurchase()).AddTo(_disposable);
 
-        _completeCallback.Subscribe(_ => CompletedPurchase()).AddTo(_disposable);
-        _cancelCallback.Subscribe(_ => CanceledPurchase()).AddTo(_disposable);
-        _failureCallback.Subscribe(_ => FailedPurchase()).AddTo(_disposable);
+            return this;
+        }
+        
+        public void Purchase()
+        {
+            _purchaseSystem
+                .OnCompleteCallback(_completeCallback)
+                .OnCancelCallback(_cancelCallback)
+                .OnFailureCallback(_failureCallback)
+                .Purchase(Model.GetPrice());
+        }
+        
+        public void SetParentAndPosition(Transform parent, int index, Vector2 position)
+        {
+            _parentTransform.Value = parent;
+            SetIndex(index);
+            _position.Value = position;
+        }
 
-        return this;
-    }
+        public void SetPosition(int index, Vector2 position)
+        {
+            SetIndex(index);
+            _position.Value = position;
+        }
+        
+        public void SetIndex(int index)
+        {
+            _index.Value = index;
+        }
 
-    public void Purchase()
-    {
-        _purchaseSystem
-            .OnCompleteCallback(_completeCallback)
-            .OnCancelCallback(_cancelCallback)
-            .OnFailureCallback(_failureCallback)
-            .Purchase(Model.GetPrice());
-    }
+        public void ReturnToPool()
+        {
+            ReturnedToPool?.Execute(Unit.Default);
+        }
 
-    public void SetParentAndPosition(Transform parent, int index, Vector2 position)
-    {
-        ParentTransform.Value = parent;
-        Index.Value = index;
-        Position.Value = position;
-    }
+        private void FailedPurchase()
+        {
+            Debug.Log("PURCHASE FAILED");
+        }
 
-    public void SetPosition(int index, Vector2 position)
-    {
-        Index.Value = index;
-        Position.Value = position;
-    }
+        private void CanceledPurchase()
+        {
+            Debug.Log("PURCHASE CANCELED");
+        }
+        
+        private void CompletedPurchase()
+        {
+            CurrencyViewModel.Decrease(Model.GetPrice());
+            _offersListViewModel.Remove(Model);
 
-    public void ReturnToPool()
-    {
-        ReturnToPoolCommand?.Execute();
-    }
+            Debug.Log("PURCHASE COMPLETE");
 
-    private void FailedPurchase()
-    {
-        Debug.Log("PURCHASE FAILED");
-    }
+            Execute();
+        }
 
-    private void CanceledPurchase()
-    {
-        Debug.Log("PURCHASE CANCELED");
-    }
+        protected virtual void Execute()
+        {
 
-    private void CompletedPurchase()
-    {
-        CurrencyViewModel.Decrease(Model.GetPrice());
-        _offersListViewModel.Remove(Model);
+        }
 
-        Debug.Log("PURCHASE COMPLETE");
-
-        Execute();
-    }
-
-    protected virtual void Execute()
-    {
-
-    }
-
-    public void Dispose()
-    {
-        _disposable?.Dispose();
-    }
+        public void Dispose()
+        {
+            _disposable?.Dispose();
+        }
     }
 }

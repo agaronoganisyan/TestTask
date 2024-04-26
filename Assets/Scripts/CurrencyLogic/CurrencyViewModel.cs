@@ -1,12 +1,14 @@
 using System;
 using UniRx;
+using UnityEngine;
 
 namespace CurrencyLogic
 {
     public class CurrencyViewModel : ICurrencyViewModel, IDisposable
     {
-        public ReactiveProperty<int> Amount { get; }
-
+        public IReadOnlyReactiveProperty<int> Amount => _amount;
+        private IReactiveProperty<int> _amount;
+        
         private CurrencyModel _model;
 
         private CompositeDisposable _disposable;
@@ -15,7 +17,7 @@ namespace CurrencyLogic
         {
             _model = model;
             
-            Amount = new ReactiveProperty<int>();
+            _amount = new ReactiveProperty<int>();
             _disposable = new CompositeDisposable();
         }
 
@@ -27,21 +29,21 @@ namespace CurrencyLogic
 
         public void Increase(int amount)
         {
-            if (amount < 0) return;
+            if (amount < 0) throw new ArgumentOutOfRangeException();
             
-            _model.Amount.Value += amount;
+            _model.SetAmount(_model.Amount.Value + amount);
         }
         
         public void Decrease(int amount)
         {
-            if (amount < 0) return;
+            if (amount < 0) throw new ArgumentOutOfRangeException();
 
-            if (_model.Amount.Value < amount) return;
+            if (_model.Amount.Value < amount) throw new ArgumentOutOfRangeException();
 
-            _model.Amount.Value -= amount;
+            _model.SetAmount(_model.Amount.Value - amount);
         }
 
-        private void ChangeAmount(int amount) => Amount.Value = amount;
+        private void ChangeAmount(int amount) => _amount.Value = amount;
 
         public void Dispose()
         {

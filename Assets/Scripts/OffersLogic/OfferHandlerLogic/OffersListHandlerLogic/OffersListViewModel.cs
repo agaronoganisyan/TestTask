@@ -3,14 +3,15 @@ using System.Linq;
 using OffersLogic.OfferHandlerLogic.FactoryLogic;
 using OffersLogic.OffersDataLogic;
 using UniRx;
-using UnityEngine;
 using Zenject;
 
 namespace OffersLogic.OfferHandlerLogic.OffersListHandlerLogic
 {
     public class OffersListViewModel : IOffersListViewModel, IDisposable
     {
-        public ReactiveCollection<OfferViewModel> Offers { get; }
+        public ReactiveCommand<OfferViewModel> OfferRemoved { get; }
+        public IReadOnlyReactiveCollection<OfferViewModel> Offers => _offers;
+        private ReactiveCollection<OfferViewModel> _offers;
 
         private OffersModel _model;
         private IOfferViewModelFactory _offerViewModelFactory;
@@ -22,7 +23,8 @@ namespace OffersLogic.OfferHandlerLogic.OffersListHandlerLogic
             _model = container.Resolve<OffersModel>();
             _offerViewModelFactory = container.Resolve<IOfferViewModelFactory>();
             
-            Offers = new ReactiveCollection<OfferViewModel>();
+            _offers = new ReactiveCollection<OfferViewModel>();
+            OfferRemoved = new ReactiveCommand<OfferViewModel>();
             _disposable = new CompositeDisposable();
         }
 
@@ -32,7 +34,8 @@ namespace OffersLogic.OfferHandlerLogic.OffersListHandlerLogic
             
             for (int i = 0; i < _model.Offers.Count; i++)
             {
-                Offers.Add(_offerViewModelFactory.Get(_model.Offers[i]));
+                _offers.Add(_offerViewModelFactory.Get(_model.Offers[i]));
+                _offers[i].SetIndex(i+1);
             }
         }
 
@@ -45,11 +48,15 @@ namespace OffersLogic.OfferHandlerLogic.OffersListHandlerLogic
 
         private void RemoveOffer(OfferModel model)
         {
-            for (int i = 0; i < Offers.Count; i++)
+            for (int i = 0; i < _offers.Count; i++)
             {
-                if (Offers[i].Model == model)
+                if (_offers[i].Model == model)
                 {
-                    Offers.RemoveAt(i);
+                    OfferViewModel offerViewModel = _offers[i];
+                    offerViewModel.ReturnToPool();
+                    _offers.Remove(offerViewModel);
+                    OfferRemoved.Execute(offerViewModel);
+                    break;
                 }
             }
         }

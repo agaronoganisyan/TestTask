@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using OffersLogic.OffersViewLogic.PurchaseButtonLogic;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -9,7 +8,7 @@ namespace OffersLogic.OffersDataLogic
     public class OffersModel : MonoBehaviour
     {
         public IReadOnlyReactiveCollection<OfferModel> Offers => _offers;
-        private ReactiveCollection<OfferModel> _offers; 
+        private ReactiveCollection<OfferModel> _offers;
         
         [SerializeReference, SelectImplementation(typeof(OfferModel))]
         private List<OfferModel> _offersList = new List<OfferModel>();

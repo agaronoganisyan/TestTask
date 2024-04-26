@@ -29,12 +29,14 @@ namespace InfrastructureLogic
             Container.Bind<PurchaseConfirmState>().FromNew().AsSingle();
             Container.Bind<IAssetsProvider>().To<AssetsProvider>().FromNew().AsSingle();
             
-            Container.Bind<ObjectPool<OfferWithDescriptionView>>().FromNew().AsSingle();
-            Container.Bind<ObjectPool<OfferWithDoubleDescriptionView>>().FromNew().AsSingle();
-            Container.Bind<ObjectPool<OfferWithDoubleIconView>>().FromNew().AsSingle();
-            Container.Bind<ObjectPool<OfferWithIconAndDescriptionView>>().FromNew().AsSingle();
-            Container.Bind<ObjectPool<OfferWithIconView>>().FromNew().AsSingle();
-            Container.Bind<ObjectPool<OfferWithMoneyView>>().FromNew().AsSingle();
+            Container.Bind<ObjectPool<OfferView>>().FromNew().AsTransient();
+            
+            // Container.Bind<ObjectPool<OfferWithDescriptionView>>().FromNew().AsSingle();
+            // Container.Bind<ObjectPool<OfferWithDoubleDescriptionView>>().FromNew().AsSingle();
+            // Container.Bind<ObjectPool<OfferWithDoubleIconView>>().FromNew().AsSingle();
+            // Container.Bind<ObjectPool<OfferWithIconAndDescriptionView>>().FromNew().AsSingle();
+            // Container.Bind<ObjectPool<OfferWithIconView>>().FromNew().AsSingle();
+            // Container.Bind<ObjectPool<OfferWithMoneyView>>().FromNew().AsSingle();
             
             Container.Bind<OffersWithDescriptionFactory>().FromNew().AsSingle();
             Container.Bind<OfferWithDoubleDescriptionFactory>().FromNew().AsSingle();

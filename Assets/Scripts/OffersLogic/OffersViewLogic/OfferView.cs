@@ -1,9 +1,6 @@
 using System;
-using CurrencyLogic;
 using OffersLogic.OfferHandlerLogic;
-using OffersLogic.OffersDataLogic;
 using OffersLogic.OffersViewLogic.PurchaseButtonLogic;
-using PurchaseLogic.PurchaseSystemLogic;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -12,7 +9,7 @@ using UnityEngine.UI;
 
 namespace OffersLogic.OffersViewLogic
 {
-    public abstract class OfferView : MonoBehaviour, IDisposable
+    public abstract class OfferView : MonoBehaviour, IDisposable, PoolLogic.IPoolable<OfferView>
     {
         private OfferViewModel _offerViewModel;
 
@@ -29,33 +26,29 @@ namespace OffersLogic.OffersViewLogic
         [SerializeField] private Color _evenOfferColor;
         [SerializeField] private Color _oddOfferColor;
 
+        private Action<OfferView> _returnToPool;
+        
         [Inject]
         private void Construct()
         {
             _rectTransform = GetComponent<RectTransform>();
             _purchaseButton = GetComponentInChildren<PurchaseButton>();
-            
-            _disposable = new CompositeDisposable();
         }
 
         public virtual void Setup(OfferViewModel offerViewModel)
         {
+            _disposable = new CompositeDisposable();
+            
             _offerViewModel = offerViewModel;
 
             _offerViewModel.Index.Subscribe((value) => SetIndex(value)).AddTo(_disposable);
             _offerViewModel.ParentTransform.Subscribe((value) => SetParent(value)).AddTo(_disposable);
             _offerViewModel.Position.Subscribe((value) => SetPosition(value)).AddTo(_disposable);       
-            _offerViewModel.ReturnToPoolCommand.Subscribe((value) => ReturnToPool()).AddTo(_disposable);       
-
+            _offerViewModel.ReturnedToPool.Subscribe((value) => ReturnToPool()).AddTo(_disposable);
             
             _purchaseButton.Setup(_offerViewModel.Model.GetPrice());
             _purchaseButton.OnCLick.Subscribe((value) => Purchase()).AddTo(_disposable);
             gameObject.SetActive(true);
-        }
-
-        public virtual void ReturnToPool()
-        {
-            
         }
 
         public void Dispose()
@@ -68,6 +61,7 @@ namespace OffersLogic.OffersViewLogic
             _rectTransform.SetParent(parent);
             _rectTransform.localScale = Vector3.one;
         } 
+        
         private void SetPosition(Vector2 position) => _rectTransform.anchoredPosition = position;
 
         private void SetIndex(int index)
@@ -80,5 +74,20 @@ namespace OffersLogic.OffersViewLogic
         {
             _offerViewModel.Purchase();
         }
+        
+        #region POOL_LOGIC
+        
+        public void PoolInitialize(Action<OfferView> returnAction)
+        {
+            _returnToPool = returnAction;
+        }
+        
+        public virtual void ReturnToPool()
+        {
+            Dispose();
+            _returnToPool?.Invoke(this);
+        }
+        
+        #endregion
     }
 }

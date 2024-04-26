@@ -1,7 +1,5 @@
-using System;
 using OffersLogic.OfferHandlerLogic;
 using OffersLogic.OffersDataLogic;
-using PoolLogic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,10 +7,8 @@ using UnityEngine.UI;
 
 namespace OffersLogic.OffersViewLogic
 {
-    public class OfferWithIconAndDescriptionView : OfferView, IPoolable<OfferWithIconAndDescriptionView>
+    public class OfferWithIconAndDescriptionView : OfferView
     {
-        private Action<OfferWithIconAndDescriptionView> _returnToPool;
-        
         [SerializeField] private Image _icon;
         [SerializeField] private TextMeshProUGUI _description;
 
@@ -25,19 +21,5 @@ namespace OffersLogic.OffersViewLogic
             _icon.sprite = localModel.Sprite;
             _description.text = localModel.Description;
         }
-        
-        #region POOL_LOGIC
-        
-        public void PoolInitialize(Action<OfferWithIconAndDescriptionView> returnAction)
-        {
-            _returnToPool = returnAction;
-        }
-        
-        public override void ReturnToPool()
-        {
-            _returnToPool?.Invoke(this);
-        }
-        
-        #endregion
     }
 }

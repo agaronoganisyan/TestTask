@@ -37,19 +37,19 @@ namespace PoolLogic
             return _pooledObjects.Pop();
         }
 
-        public void Push(T pushedObject)
+        public void PushBackAll()
+        {
+            _onPushBackAllObjects?.Invoke();
+        }
+
+        private void Push(T pushedObject)
         {
             if (_pooledObjects.Contains(pushedObject)) return;
             _pooledObjects.Push(pushedObject);
             pushedObject.transform.SetParent(null);
             pushedObject.gameObject.SetActive(false);
         }
-        
-        public void PushBackAll()
-        {
-            _onPushBackAllObjects?.Invoke();
-        }
-        
+
         private void InitialSpawn(int amount)
         {
             for (int i = 0; i < amount; i++)
@@ -60,8 +60,6 @@ namespace PoolLogic
 
         private void CreateAndAddToPoolNewObject()
         {
-            //T createdObject1 = _container.InstantiatePrefab(_prefab).GetComponent<T>();
-            
             T createdObject = _container.InstantiatePrefab(_prefab).GetComponent<T>();
             _onPushBackAllObjects += createdObject.ReturnToPool;
             createdObject.PoolInitialize(Push);

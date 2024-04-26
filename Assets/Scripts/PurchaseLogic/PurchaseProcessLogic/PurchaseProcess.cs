@@ -2,6 +2,7 @@ using System;
 using InfrastructureLogic.StateMachineLogic;
 using PurchaseLogic.PurchaseHandlerLogic;
 using UniRx;
+using UnityEngine;
 using Zenject;
 
 namespace PurchaseLogic.PurchaseProcessLogic
